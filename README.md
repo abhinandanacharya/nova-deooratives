@@ -35,7 +35,12 @@ MyLang lets you write complex logic inside HTML files using familiar tag-like sy
 ### Via CDN (zero setup)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js"></script>
+<!-- jsDelivr (GitHub — instant after git push) -->
+<script src="https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"></script>
+
+<!-- jsDelivr (NPM) -->
+<script src="https://cdn.jsdelivr.net/npm/nova-deooratives@1.0.0/dist/mylang.umd.min.js"></script>
+```
 
 <script type="text/mylang">
   <for data="array(1,2,3,4,5)" as="n">
