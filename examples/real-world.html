@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MyLang.js — Real-World Examples</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e2e8f0; }
+    h1 { text-align:center; padding:40px 20px 10px; background:linear-gradient(90deg,#7c3aed,#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:2.2rem; }
+    .subtitle { text-align:center; color:#94a3b8; padding-bottom:40px; }
+    .examples { max-width:900px; margin:0 auto; padding:20px; display:grid; gap:40px; }
+    .example { background:#1a1f36; border:1px solid #2d3748; border-radius:12px; overflow:hidden; }
+    .example-title { background:#111827; padding:16px 20px; font-weight:600; color:#a78bfa; border-bottom:1px solid #2d3748; }
+    .example-output { padding:20px; }
+    .example-output h1,h2,h3 { color:#34d399; }
+    .example-output p  { color:#e2e8f0; margin:3px 0; }
+    .example-output li { color:#fbbf24; margin-left:20px; }
+    .example-output td,th { border:1px solid #374151; padding:6px 12px; color:#e2e8f0; }
+    .example-output th { background:#1f2937; color:#7c3aed; }
+    .example-output table { border-collapse:collapse; width:100%; }
+    .example-output .card { background:#111827; border:1px solid #374151; border-radius:8px; padding:12px; margin:6px 0; }
+    .example-output .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:.75rem; }
+    .example-output .badge-green { background:rgba(52,211,153,.2); color:#34d399; }
+    .example-output .badge-red { background:rgba(248,113,113,.2); color:#f87171; }
+    .example-output .badge-blue { background:rgba(59,130,246,.2); color:#60a5fa; }
+    .example-output .progress { height:12px; background:#374151; border-radius:6px; overflow:hidden; margin:4px 0; }
+    .example-output .progress-bar { height:100%; background:linear-gradient(90deg,#7c3aed,#06b6d4); border-radius:6px; }
+  </style>
+</head>
+<body>
+<h1>⚡ MyLang.js</h1>
+<p class="subtitle">Real-world example applications</p>
+
+<div class="examples" id="app"></div>
+
+<script src="../dist/mylang.umd.js" onerror="this.src='https://cdn.jsdelivr.net/npm/mylang-js/dist/mylang.umd.min.js'"></script>
+<script>
+const app = document.getElementById('app');
+
+function addExample(title, template, scope) {
+  const wrap = document.createElement('div');
+  wrap.className = 'example';
+  wrap.innerHTML = `<div class="example-title">📌 ${title}</div><div class="example-output" id="ex-${Date.now()}"></div>`;
+  app.appendChild(wrap);
+  const out = wrap.querySelector('.example-output');
+  MyLang.render(template, out, { scope });
+}
+
+// ── 1. User profile cards ────────────────────────────────────
+addExample('User Profile Cards', `
+<each of="users" as="u" index="i">
+  <div class="card">
+    <p><b>{{ u.name }}</b> <span class="badge badge-blue">{{ u.role }}</span></p>
+    <p style="color:#94a3b8;font-size:.85rem">{{ u.email }}</p>
+    <if cond="u.active">
+      <span class="badge badge-green">● Active</span>
+      <else><span class="badge badge-red">○ Inactive</span></else>
+    </if>
+  </div>
+</each>
+`, {
+  users: [
+    { name: 'Alice Kumar', role: 'Admin', email: 'alice@example.com', active: true },
+    { name: 'Bob Singh',   role: 'Developer', email: 'bob@example.com', active: true },
+    { name: 'Carol Das',   role: 'Designer', email: 'carol@example.com', active: false },
+  ]
+});
+
+// ── 2. Leaderboard with medals ───────────────────────────────
+addExample('Leaderboard', `
+<let name="medals" value="array('🥇','🥈','🥉')" />
+<table>
+  <tr><th>Rank</th><th>Player</th><th>Score</th><th>Level</th></tr>
+  <each of="players" as="p" index="i">
+    <tr>
+      <td>{{ i < 3 ? medals[i] : '#'+(i+1) }}</td>
+      <td>{{ p.name }}</td>
+      <td><b>{{ p.score }}</b></td>
+      <td>
+        <if cond="p.score >= 9000"><span class="badge badge-green">Legend</span>
+          <elif cond="p.score >= 5000"><span class="badge badge-blue">Expert</span></elif>
+          <else><span class="badge">Rookie</span></else>
+        </if>
+      </td>
+    </tr>
+  </each>
+</table>
+`, {
+  players: [
+    { name: 'Zara', score: 12500 },
+    { name: 'Amit', score: 9800 },
+    { name: 'Leon', score: 7200 },
+    { name: 'Priya', score: 4100 },
+    { name: 'Marco', score: 2300 },
+  ]
+});
+
+// ── 3. Progress bars ──────────────────────────────────────────
+addExample('Skill Progress Bars', `
+<each of="skills" as="skill">
+  <div style="margin:8px 0">
+    <p style="display:flex;justify-content:space-between">
+      <span>{{ skill.name }}</span><b>{{ skill.pct }}%</b>
+    </p>
+    <div class="progress">
+      <div class="progress-bar" style="width:{{ skill.pct }}%"></div>
+    </div>
+  </div>
+</each>
+`, {
+  skills: [
+    { name: 'JavaScript', pct: 92 },
+    { name: 'TypeScript', pct: 85 },
+    { name: 'HTML/CSS',   pct: 95 },
+    { name: 'Python',     pct: 70 },
+    { name: 'Rust',       pct: 40 },
+  ]
+});
+
+// ── 4. Statistics dashboard ───────────────────────────────────
+addExample('Statistics Dashboard', `
+<let name="nums" value="range(1,11)" />
+<reduce data="nums" acc="s" init="0" item="n" expr="s+n" save="total" />
+<reduce data="nums" acc="mx" init="0" item="n" expr="n > mx ? n : mx" save="maxVal" />
+<reduce data="nums" acc="mn" init="999" item="n" expr="n < mn ? n : mn" save="minVal" />
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+  <div class="card"><p style="color:#94a3b8;font-size:.8rem">SUM</p><h2>{{ total }}</h2></div>
+  <div class="card"><p style="color:#94a3b8;font-size:.8rem">MAX</p><h2>{{ maxVal }}</h2></div>
+  <div class="card"><p style="color:#94a3b8;font-size:.8rem">MIN</p><h2>{{ minVal }}</h2></div>
+</div>
+<p style="margin-top:12px;color:#94a3b8">Average: <b>{{ total / len(nums) }}</b></p>
+`, {});
+
+// ── 5. FizzBuzz ───────────────────────────────────────────────
+addExample('FizzBuzz (1–20)', `
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+  <for range="1,21" as="n">
+    <div class="card" style="min-width:60px;text-align:center">
+      <if cond="n%15===0"><b style="color:#f9a8d4">FB</b>
+        <elif cond="n%3===0"><b style="color:#34d399">F</b></elif>
+        <elif cond="n%5===0"><b style="color:#60a5fa">B</b></elif>
+        <else><span>{{ n }}</span></else>
+      </if>
+    </div>
+  </for>
+</div>
+`, {});
+
+// ── 6. Prime sieve ────────────────────────────────────────────
+addExample('Prime Numbers (2–50)', `
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+  <filter data="range(2,51)" where="!range(2,Math.floor(Math.sqrt($v))+1).some(d => $v%d===0)" as="p">
+    <span class="badge badge-blue">{{ p }}</span>
+  </filter>
+</div>
+`, {});
+
+// ── 7. Calendar-like grid ─────────────────────────────────────
+addExample('7×5 Number Grid', `
+<table>
+  <for range="0,5" as="row">
+    <tr>
+      <for range="0,7" as="col">
+        <let name="n" value="row*7+col+1" />
+        <td style="text-align:center;min-width:36px">
+          <if cond="n%2===0">
+            <span style="color:#7c3aed">{{ n }}</span>
+            <else><span>{{ n }}</span></else>
+          </if>
+        </td>
+      </for>
+    </tr>
+  </for>
+</table>
+`, {});
+</script>
+</body>
+</html>

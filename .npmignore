@@ -1,0 +1,16 @@
+# NPM publish ignore list
+node_modules/
+src/
+tests/
+scripts/
+docs/
+examples/
+.github/
+*.log
+*.map
+coverage/
+.DS_Store
+tsconfig*.json
+jest.config.json
+.eslintrc*
+.prettierrc*

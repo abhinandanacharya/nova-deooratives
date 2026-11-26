@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyLang — HTML Tag-Based Scripting Language</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e2e8f0; line-height: 1.6; }
+    header { background: linear-gradient(135deg, #1a1f36 0%, #2d1b69 100%); padding: 40px 60px; border-bottom: 1px solid #2d3748; }
+    header h1 { font-size: 2.5rem; background: linear-gradient(90deg, #7c3aed, #3b82f6, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    header p { color: #94a3b8; margin-top: 8px; font-size: 1.1rem; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+    .section { margin-bottom: 60px; }
+    .section h2 { font-size: 1.5rem; color: #7c3aed; border-left: 4px solid #7c3aed; padding-left: 12px; margin-bottom: 20px; }
+    .demo-block { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 700px) { .demo-block { grid-template-columns: 1fr; } header { padding: 24px; } }
+    .code-box { background: #1a1f36; border: 1px solid #2d3748; border-radius: 10px; padding: 16px; overflow-x: auto; }
+    .code-box pre { font-family: 'Fira Code', 'Cascadia Code', monospace; font-size: 0.82rem; color: #a5b4fc; white-space: pre; }
+    .output-box { background: #111827; border: 1px solid #374151; border-radius: 10px; padding: 16px; min-height: 60px; }
+    .output-box label { font-size: 0.75rem; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+    .mylang-output { }
+    /* Demo output styling */
+    .mylang-output h1 { font-size: 1.3rem; color: #34d399; }
+    .mylang-output h2 { font-size: 1.1rem; color: #60a5fa; margin: 4px 0; }
+    .mylang-output p  { color: #e2e8f0; margin: 2px 0; }
+    .mylang-output li { color: #fbbf24; margin-left: 20px; }
+    .mylang-output span { color: #f9a8d4; }
+    .mylang-output div { color: #c4b5fd; margin: 2px 0; }
+    .mylang-output table { border-collapse: collapse; width: 100%; }
+    .mylang-output td, .mylang-output th { border: 1px solid #374151; padding: 6px 12px; color: #e2e8f0; }
+    .mylang-output th { background: #1f2937; color: #7c3aed; }
+    .tag-badge { display: inline-block; background: #2d1b69; color: #a78bfa; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-family: monospace; margin: 2px; }
+    .hero-tags { margin-top: 12px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ MyLang</h1>
+  <p>HTML-tag-based scripting language — write logic like markup, powered by JavaScript</p>
+  <div class="hero-tags">
+    <span class="tag-badge">&lt;for&gt;</span>
+    <span class="tag-badge">&lt;while&gt;</span>
+    <span class="tag-badge">&lt;dowhile&gt;</span>
+    <span class="tag-badge">&lt;if&gt;</span>
+    <span class="tag-badge">&lt;elif&gt;</span>
+    <span class="tag-badge">&lt;else&gt;</span>
+    <span class="tag-badge">&lt;map&gt;</span>
+    <span class="tag-badge">&lt;filter&gt;</span>
+    <span class="tag-badge">&lt;reduce&gt;</span>
+    <span class="tag-badge">&lt;switch&gt;</span>
+    <span class="tag-badge">&lt;try&gt;</span>
+    <span class="tag-badge">&lt;each&gt;</span>
+    <span class="tag-badge">&lt;repeat&gt;</span>
+    <span class="tag-badge">&lt;let&gt;</span>
+    <span class="tag-badge">&lt;print&gt;</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ═══════════════════════════ 1. Basic For ═══════════════════════════ -->
+  <div class="section">
+    <h2>1 — &lt;for data=&gt; — Iterate an array (your original example)</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;for data="array(1,2,3,4)" index="default" printable="p"&gt;
+  &lt;h1&gt;{{ p }}&lt;/h1&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <for data="array(1,2,3,4)" index="default" printable="p">
+            <h1>{{ p }}</h1>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 2. For-of ═══════════════════════════ -->
+  <div class="section">
+    <h2>2 — &lt;for of=&gt; — For-of loop</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="fruits" value="array('🍎 Apple','🍌 Banana','🍇 Grape')" /&gt;
+&lt;for of="fruits" as="fruit" index="i"&gt;
+  &lt;p&gt;{{ i+1 }}. {{ fruit }}&lt;/p&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <let name="fruits" value="array('🍎 Apple','🍌 Banana','🍇 Grape')" />
+          <for of="fruits" as="fruit" index="i">
+            <p>{{ i+1 }}. {{ fruit }}</p>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 3. Classic C-Style For ═══════════════════════════ -->
+  <div class="section">
+    <h2>3 — &lt;for init cond step&gt; — Classic C-style for loop</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;for init="i=0" cond="i&lt;5" step="i++"&gt;
+  &lt;p&gt;i = {{ i }} → i² = {{ i*i }}&lt;/p&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <for init="i=0" cond="i<5" step="i++">
+            <p>i = {{ i }} → i² = {{ i*i }}</p>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 4. Range For ═══════════════════════════ -->
+  <div class="section">
+    <h2>4 — &lt;for range=&gt; — Range shorthand (start, end, step)</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;!-- Even numbers 0–10 --&gt;
+&lt;for range="0,11,2" as="n"&gt;
+  &lt;span&gt;{{ n }} &lt;/span&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <for range="0,11,2" as="n">
+            <span>{{ n }} </span>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 5. For-in ═══════════════════════════ -->
+  <div class="section">
+    <h2>5 — &lt;for in=&gt; — For-in (object keys)</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="user" value="{name:'Alice', age:30, city:'NYC'}" /&gt;
+&lt;for in="user" as="key"&gt;
+  &lt;p&gt;&lt;b&gt;{{ key }}&lt;/b&gt; : {{ user[key] }}&lt;/p&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <let name="user" value="{name:'Alice', age:30, city:'NYC'}" />
+          <for in="user" as="key">
+            <p><b>{{ key }}</b> : {{ user[key] }}</p>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 6. Nested For ═══════════════════════════ -->
+  <div class="section">
+    <h2>6 — Nested &lt;for&gt; — Multiplication table</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;table&gt;
+  &lt;for range="1,4" as="row"&gt;
+    &lt;tr&gt;
+      &lt;for range="1,4" as="col"&gt;
+        &lt;td&gt;{{ row }}×{{ col }}={{ row*col }}&lt;/td&gt;
+      &lt;/for&gt;
+    &lt;/tr&gt;
+  &lt;/for&gt;
+&lt;/table&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <table>
+            <for range="1,4" as="row">
+              <tr>
+                <for range="1,4" as="col">
+                  <td>{{ row }}×{{ col }}={{ row*col }}</td>
+                </for>
+              </tr>
+            </for>
+          </table>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 7. While ═══════════════════════════ -->
+  <div class="section">
+    <h2>7 — &lt;while&gt; — While loop</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="n" value="1" /&gt;
+&lt;while cond="n &lt;= 8"&gt;
+  &lt;span&gt;{{ n }} &lt;/span&gt;
+  &lt;let name="n" value="n*2" upper /&gt;
+&lt;/while&gt;</pre></div>
+      <div class="output-box"><label>Output (powers of 2)</label>
+        <script type="text/mylang">
+          <let name="n" value="1" />
+          <while cond="n <= 8">
+            <span>{{ n }} </span>
+            <let name="n" value="n*2" upper />
+          </while>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 8. Do-While ═══════════════════════════ -->
+  <div class="section">
+    <h2>8 — &lt;dowhile&gt; — Do-While loop</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="x" value="10" /&gt;
+&lt;dowhile cond="x &lt; 5"&gt;
+  &lt;p&gt;Ran once even though x={{ x }} is NOT &lt; 5&lt;/p&gt;
+  &lt;let name="x" value="x+1" upper /&gt;
+&lt;/dowhile&gt;</pre></div>
+      <div class="output-box"><label>Output (runs at least once)</label>
+        <script type="text/mylang">
+          <let name="x" value="10" />
+          <dowhile cond="x < 5">
+            <p>Ran once even though x={{ x }} is NOT &lt; 5</p>
+            <let name="x" value="x+1" upper />
+          </dowhile>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 9. If / Elif / Else ═══════════════════════════ -->
+  <div class="section">
+    <h2>9 — &lt;if&gt; / &lt;elif&gt; / &lt;else&gt; — Conditionals</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;for data="array(90,65,45,30)" as="score"&gt;
+  &lt;if cond="score &gt;= 80"&gt;
+    &lt;p&gt;{{ score }} → 🏆 A Grade&lt;/p&gt;
+    &lt;elif cond="score &gt;= 60"&gt;
+      &lt;p&gt;{{ score }} → ✅ B Grade&lt;/p&gt;
+    &lt;/elif&gt;
+    &lt;elif cond="score &gt;= 50"&gt;
+      &lt;p&gt;{{ score }} → 📘 C Grade&lt;/p&gt;
+    &lt;/elif&gt;
+    &lt;else&gt;
+      &lt;p&gt;{{ score }} → ❌ Fail&lt;/p&gt;
+    &lt;/else&gt;
+  &lt;/if&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <for data="array(90,65,45,30)" as="score">
+            <if cond="score >= 80">
+              <p>{{ score }} → 🏆 A Grade</p>
+              <elif cond="score >= 60">
+                <p>{{ score }} → ✅ B Grade</p>
+              </elif>
+              <elif cond="score >= 50">
+                <p>{{ score }} → 📘 C Grade</p>
+              </elif>
+              <else>
+                <p>{{ score }} → ❌ Fail</p>
+              </else>
+            </if>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 10. Nested If ═══════════════════════════ -->
+  <div class="section">
+    <h2>10 — Nested &lt;if&gt; inside &lt;for&gt;</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;for range="1,11" as="n"&gt;
+  &lt;if cond="n % 15 === 0"&gt;
+    &lt;p&gt;FizzBuzz&lt;/p&gt;
+    &lt;elif cond="n % 3 === 0"&gt;&lt;p&gt;Fizz&lt;/p&gt;&lt;/elif&gt;
+    &lt;elif cond="n % 5 === 0"&gt;&lt;p&gt;Buzz&lt;/p&gt;&lt;/elif&gt;
+    &lt;else&gt;&lt;p&gt;{{ n }}&lt;/p&gt;&lt;/else&gt;
+  &lt;/if&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output (FizzBuzz 1–10)</label>
+        <script type="text/mylang">
+          <for range="1,11" as="n">
+            <if cond="n % 15 === 0">
+              <p>FizzBuzz</p>
+              <elif cond="n % 3 === 0"><p>Fizz</p></elif>
+              <elif cond="n % 5 === 0"><p>Buzz</p></elif>
+              <else><p>{{ n }}</p></else>
+            </if>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 11. Map ═══════════════════════════ -->
+  <div class="section">
+    <h2>11 — &lt;map&gt; — Array.map equivalent</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;ul&gt;
+  &lt;map data="array('Alice','Bob','Charlie')" as="name" index="i"&gt;
+    &lt;li&gt;{{ i+1 }}. Hello, {{ name }}! ({{ len(name) }} chars)&lt;/li&gt;
+  &lt;/map&gt;
+&lt;/ul&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <ul>
+            <map data="array('Alice','Bob','Charlie')" as="name" index="i">
+              <li>{{ i+1 }}. Hello, {{ name }}! ({{ len(name) }} chars)</li>
+            </map>
+          </ul>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 12. Filter ═══════════════════════════ -->
+  <div class="section">
+    <h2>12 — &lt;filter&gt; — Array.filter equivalent</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="nums" value="array(1,2,3,4,5,6,7,8,9,10)" /&gt;
+&lt;p&gt;Even numbers:&lt;/p&gt;
+&lt;filter data="nums" where="$v % 2 === 0" as="n" separator=", "&gt;
+  &lt;b&gt;{{ n }}&lt;/b&gt;
+&lt;/filter&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <let name="nums" value="array(1,2,3,4,5,6,7,8,9,10)" />
+          <p>Even numbers:</p>
+          <filter data="nums" where="$v % 2 === 0" as="n" separator=", ">
+            <b>{{ n }}</b>
+          </filter>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 13. Reduce ═══════════════════════════ -->
+  <div class="section">
+    <h2>13 — &lt;reduce&gt; — Array.reduce equivalent</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;reduce data="array(10,20,30,40)" acc="total" init="0"
+        item="n" expr="total + n" save="total" /&gt;
+&lt;p&gt;Sum = {{ total }}&lt;/p&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <reduce data="array(10,20,30,40)" acc="total" init="0" item="n" expr="total + n" save="total" />
+          <p>Sum = {{ total }}</p>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 14. Switch ═══════════════════════════ -->
+  <div class="section">
+    <h2>14 — &lt;switch&gt; / &lt;case&gt; / &lt;default&gt;</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;for data="array('mon','wed','sat','sun','fri')" as="day"&gt;
+  &lt;switch value="day"&gt;
+    &lt;case match="'mon'"&gt;&lt;p&gt;{{ day }} → Start of week 🚀&lt;/p&gt;&lt;/case&gt;
+    &lt;case match="'fri'"&gt;&lt;p&gt;{{ day }} → TGIF! 🎉&lt;/p&gt;&lt;/case&gt;
+    &lt;case match="'sat'"&gt;&lt;p&gt;{{ day }} → Weekend! 😎&lt;/p&gt;&lt;/case&gt;
+    &lt;case match="'sun'"&gt;&lt;p&gt;{{ day }} → Sunday rest 😴&lt;/p&gt;&lt;/case&gt;
+    &lt;default&gt;&lt;p&gt;{{ day }} → Midweek grind 💼&lt;/p&gt;&lt;/default&gt;
+  &lt;/switch&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <for data="array('mon','wed','sat','sun','fri')" as="day">
+            <switch value="day">
+              <case match="'mon'"><p>{{ day }} → Start of week 🚀</p></case>
+              <case match="'fri'"><p>{{ day }} → TGIF! 🎉</p></case>
+              <case match="'sat'"><p>{{ day }} → Weekend! 😎</p></case>
+              <case match="'sun'"><p>{{ day }} → Sunday rest 😴</p></case>
+              <default><p>{{ day }} → Midweek grind 💼</p></default>
+            </switch>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 15. Repeat ═══════════════════════════ -->
+  <div class="section">
+    <h2>15 — &lt;repeat&gt; — Repeat N times</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;repeat times="5" index="i"&gt;
+  &lt;p&gt;⭐ Star #{{ i+1 }}&lt;/p&gt;
+&lt;/repeat&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <repeat times="5" index="i">
+            <p>⭐ Star #{{ i+1 }}</p>
+          </repeat>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 16. Try/Catch/Finally ═══════════════════════════ -->
+  <div class="section">
+    <h2>16 — &lt;try&gt; / &lt;catch&gt; / &lt;finally&gt;</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;try&gt;
+  &lt;print value="undefinedVar.property" /&gt;
+  &lt;catch as="err"&gt;
+    &lt;p&gt;🚨 Caught: {{ err }}&lt;/p&gt;
+  &lt;/catch&gt;
+  &lt;finally&gt;
+    &lt;p&gt;✅ Finally block always runs&lt;/p&gt;
+  &lt;/finally&gt;
+&lt;/try&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <try>
+            <print value="undefinedVar.property" />
+            <catch as="err">
+              <p>🚨 Caught: {{ err }}</p>
+            </catch>
+            <finally>
+              <p>✅ Finally block always runs</p>
+            </finally>
+          </try>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 17. Each ═══════════════════════════ -->
+  <div class="section">
+    <h2>17 — &lt;each&gt; — Shorthand for-each with index</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;let name="users" value="array(
+  {name:'Alice',role:'Admin'},
+  {name:'Bob',role:'User'},
+  {name:'Carol',role:'Mod'}
+)" /&gt;
+&lt;each of="users" as="u" index="i"&gt;
+  &lt;p&gt;[{{ i }}] {{ u.name }} — {{ u.role }}&lt;/p&gt;
+&lt;/each&gt;</pre></div>
+      <div class="output-box"><label>Output</label>
+        <script type="text/mylang">
+          <let name="users" value="array({name:'Alice',role:'Admin'},{name:'Bob',role:'User'},{name:'Carol',role:'Mod'})" />
+          <each of="users" as="u" index="i">
+            <p>[{{ i }}] {{ u.name }} — {{ u.role }}</p>
+          </each>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 18. Nested Map+Filter ═══════════════════════════ -->
+  <div class="section">
+    <h2>18 — Nested &lt;filter&gt; + &lt;map&gt; pipeline</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;!-- Filter primes, then map to show them squared --&gt;
+&lt;let name="nums" value="range(2,20)" /&gt;
+&lt;filter data="nums" where="
+  !range(2,Math.floor(Math.sqrt($v))+1).some(d => $v % d === 0)
+" as="prime" separator=" "&gt;
+  &lt;b&gt;{{ prime }}&lt;/b&gt;
+&lt;/filter&gt;</pre></div>
+      <div class="output-box"><label>Output (primes 2–19)</label>
+        <script type="text/mylang">
+          <let name="nums" value="range(2,20)" />
+          <filter data="nums" where="!range(2,Math.floor(Math.sqrt($v))+1).some(d => $v % d === 0)" as="prime" separator=" ">
+            <b>{{ prime }}</b>
+          </filter>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 19. Break / Continue ═══════════════════════════ -->
+  <div class="section">
+    <h2>19 — &lt;break&gt; and &lt;continue&gt;</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>&lt;!-- Skip 3, stop at 7 --&gt;
+&lt;for range="1,11" as="n"&gt;
+  &lt;if cond="n === 3"&gt;
+    &lt;continue /&gt;
+  &lt;/if&gt;
+  &lt;if cond="n === 7"&gt;
+    &lt;break /&gt;
+  &lt;/if&gt;
+  &lt;span&gt;{{ n }} &lt;/span&gt;
+&lt;/for&gt;</pre></div>
+      <div class="output-box"><label>Output (1–6, skip 3, stop at 7)</label>
+        <script type="text/mylang">
+          <for range="1,11" as="n">
+            <if cond="n === 3">
+              <continue />
+            </if>
+            <if cond="n === 7">
+              <break />
+            </if>
+            <span>{{ n }} </span>
+          </for>
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ 20. JS API Usage ═══════════════════════════ -->
+  <div class="section">
+    <h2>20 — JavaScript API: MyLang.render()</h2>
+    <div class="demo-block">
+      <div class="code-box"><pre>// Render from JS with initial scope
+MyLang.render(`
+  &lt;for of="items" as="item"&gt;
+    &lt;h2&gt;{{ item.name }} — \${{ item.price }}&lt;/h2&gt;
+  &lt;/for&gt;
+`, document.getElementById('js-output'), {
+  items: [
+    { name: 'Coffee', price: 3.5 },
+    { name: 'Bagel',  price: 2.0 },
+    { name: 'Muffin', price: 2.75 },
+  ]
+});</pre></div>
+      <div class="output-box"><label>Output</label>
+        <div id="js-output" class="mylang-output"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script src="mylang.js"></script>
+<script>
+  // Demo 20 — JS API
+  MyLang.render(`
+    <for of="items" as="item">
+      <h2>{{ item.name }} — ${{ item.price }}</h2>
+    </for>
+  `, document.getElementById('js-output'), {
+    items: [
+      { name: 'Coffee', price: 3.5 },
+      { name: 'Bagel',  price: 2.0 },
+      { name: 'Muffin', price: 2.75 },
+    ]
+  });
+</script>
+</body>
+</html>

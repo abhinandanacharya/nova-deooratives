@@ -1,0 +1,19 @@
+{
+  "transform": {
+    "^.+\\.tsx?$": ["ts-jest", {
+      "tsconfig": {
+        "module": "commonjs",
+        "target": "es2020",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": false
+      }
+    }]
+  },
+  "testEnvironment": "node",
+  "testMatch": ["**/tests/**/*.test.js", "**/tests/**/*.test.ts"],
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageDirectory": "coverage"
+}

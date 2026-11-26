@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="nova-deooratives (MyLang.js) — HTML-tag-based scripting language. Write for loops, if conditions, map, filter as custom HTML tags." />
+  <meta property="og:title" content="nova-deooratives (MyLang.js) — HTML Tag Scripting Language" />
+  <meta property="og:description" content="Replace complex JS with readable HTML-like tags. For loops, conditionals, map/filter — all as custom tags." />
+  <title>nova-deooratives (MyLang.js) — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8fafc;
+      --bg3: #f1f5f9;
+      --code-bg: #0f172a;
+      --code-header-bg: #1e293b;
+      --code-text: #e2e8f0;
+      --nav-bg: rgba(255, 255, 255, 0.9);
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #475569;
+      --purple: #4f46e5;
+      --purple-light: #4338ca;
+      --blue: #0284c7;
+      --teal: #0d9488;
+      --green: #059669;
+      --yellow: #d97706;
+      --red: #dc2626;
+      --pink: #db2777;
+      --radius: 10px;
+      --sidebar-w: 268px;
+      --shadow: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    [data-theme="dark"] {
+      --bg: #0b1120;
+      --bg2: #111827;
+      --bg3: #1e293b;
+      --code-bg: #020617;
+      --code-header-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --nav-bg: rgba(11, 17, 32, 0.9);
+      --border: #1e293b;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --purple: #6366f1;
+      --purple-light: #818cf8;
+      --blue: #38bdf8;
+      --teal: #2dd4bf;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --pink: #f472b6;
+      --shadow: none;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; display: flex; min-height: 100vh; -webkit-font-smoothing: antialiased; }
+
+    /* ── Sidebar ─────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w); min-height: 100vh; background: var(--bg2);
+      border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; bottom: 0;
+      overflow-y: auto; padding: 24px 0; z-index: 100;
+      transition: transform .25s ease;
+    }
+    .sidebar-logo { padding: 0 20px 18px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+    .sidebar-logo h1 { font-size: 1.25rem; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+    .sidebar-logo span { font-size: 0.75rem; color: var(--muted); display: block; margin-top: 2px; }
+    .sidebar-section { padding: 12px 20px 4px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 700; }
+    .sidebar-link { display: block; padding: 6px 20px; color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-left: 3px solid transparent; transition: all .15s; }
+    .sidebar-link:hover, .sidebar-link.active { color: var(--purple); border-color: var(--purple); background: rgba(79, 70, 229, 0.07); }
+    .sidebar-tag { font-family: 'Fira Code', monospace; font-size: 0.8rem; }
+
+    /* ── Main content ─────────────────── */
+    .main { margin-left: var(--sidebar-w); flex: 1; min-width: 0; }
+    
+    /* ── Top nav ──────────────────────── */
+    .topnav {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--nav-bg); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 40px; gap: 16px;
+    }
+    .topnav-right { display: flex; align-items: center; gap: 10px; }
+    .theme-btn {
+      background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+      padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; line-height: 1;
+    }
+    .theme-btn:hover { border-color: var(--purple); }
+    .badge { background: rgba(79, 70, 229, 0.12); color: var(--purple); border: 1px solid rgba(79, 70, 229, 0.25); padding: 2px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+    .search-box {
+      background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+      padding: 7px 14px; border-radius: 8px; font-size: 0.85rem; width: 230px; outline: none;
+    }
+    .search-box:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); }
+
+    /* ── Page sections ──────────────────── */
+    .page { max-width: 920px; margin: 0 auto; padding: 48px 40px; }
+    .hero { text-align: center; padding: 64px 20px 48px; border-bottom: 1px solid var(--border); background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%); }
+    .hero h2 { font-size: 2.8rem; font-weight: 700; line-height: 1.18; margin-bottom: 18px; letter-spacing: -0.03em; }
+    .hero h2 span { background: linear-gradient(135deg, var(--purple), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero p { font-size: 1.1rem; color: var(--muted); max-width: 620px; margin: 0 auto 28px; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: .15s; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-primary { background: var(--purple); color: #ffffff; box-shadow: 0 1px 2px rgba(79, 70, 229, 0.25); }
+    .btn-primary:hover { background: var(--purple-light); }
+    .btn-outline { border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+    .btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+
+    /* ── Install banner ──────────────────── */
+    .install-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+    .install-tab { padding: 9px 16px; font-size: 0.85rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: var(--muted); background: none; border-top: none; border-left: none; border-right: none; transition: .15s; }
+    .install-tab:hover { color: var(--text); }
+    .install-tab.active { border-bottom-color: var(--purple); color: var(--purple); font-weight: 600; }
+    .install-panel { display: none; }
+    .install-panel.active { display: block; }
+
+    /* ── Code blocks ──────────────────────── */
+    .code-wrap { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 16px 0; box-shadow: var(--shadow); }
+    .code-header { display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: var(--code-header-bg); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .code-lang { font-size: 0.75rem; color: #94a3b8; font-family: 'Fira Code', monospace; }
+    .code-copy { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #e2e8f0; cursor: pointer; font-size: 0.75rem; padding: 3px 10px; border-radius: 5px; font-weight: 500; }
+    .code-copy:hover { background: rgba(255,255,255,0.16); }
+    pre { padding: 18px 20px; overflow-x: auto; }
+    pre code { font-family: 'Fira Code', monospace; font-size: 0.84rem; line-height: 1.65; color: var(--code-text); white-space: pre; }
+
+    /* Syntax highlighting (always crisp on dark code-bg) */
+    .tok-tag { color: #60a5fa; }
+    .tok-attr { color: #34d399; }
+    .tok-val { color: #fbbf24; }
+    .tok-interp { color: #f472b6; }
+    .tok-comment { color: #94a3b8; font-style: italic; }
+
+    /* ── Section headers ──────────────────── */
+    h2.section-title { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; margin: 52px 0 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--text); }
+    h3.sub-title { font-size: 1.05rem; font-weight: 600; color: var(--purple); margin: 28px 0 10px; }
+    p { margin: 12px 0; color: var(--text); }
+    p code, li code { font-family: 'Fira Code', monospace; font-size: 0.84em; background: var(--bg3); color: var(--purple); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--border); }
+    p a { color: var(--purple); text-decoration: none; font-weight: 500; }
+    p a:hover { text-decoration: underline; }
+
+    /* ── Tag cards ──────────────────────────── */
+    .tag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin: 20px 0; }
+    .tag-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; transition: border-color .15s, box-shadow .15s; box-shadow: var(--shadow); }
+    .tag-card:hover { border-color: var(--purple); }
+    .tag-card-name { font-family: 'Fira Code', monospace; color: var(--purple); font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; }
+    .tag-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── Feature list ───────────────────────── */
+    .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: var(--text); }
+    .feature-list li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Comparison table ───────────────────── */
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+    th { background: var(--bg2); padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--border); color: var(--text); font-weight: 600; }
+    td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    td code, th code { font-family: 'Fira Code', monospace; background: var(--bg3); color: var(--purple); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg2); }
+
+    /* ── Alerts ──────────────────────────────── */
+    .alert { border-radius: 8px; padding: 14px 18px; margin: 16px 0; border-left: 4px solid; font-size: 0.9rem; color: var(--text); }
+    .alert-info { background: rgba(2, 132, 199, 0.08); border-color: var(--blue); }
+    .alert-warn { background: rgba(217, 119, 6, 0.09); border-color: var(--yellow); }
+    .alert-tip  { background: rgba(5, 150, 105, 0.08); border-color: var(--green); }
+    .alert-danger { background: rgba(220, 38, 38, 0.08); border-color: var(--red); }
+    .alert strong { display: block; margin-bottom: 4px; }
+
+    /* ── Playground ──────────────────────────── */
+    .playground { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: stretch; }
+    .playground textarea {
+      width: 100%; background: var(--code-bg); border: 1px solid var(--border);
+      color: var(--code-text); font-family: 'Fira Code', monospace; font-size: 0.85rem;
+      padding: 16px; border-radius: var(--radius); resize: vertical; min-height: 250px;
+      outline: none; line-height: 1.65;
+    }
+    .playground textarea:focus { border-color: var(--purple); }
+    .playground-out {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px; min-height: 250px; box-shadow: var(--shadow);
+    }
+    .playground-out h1 { font-size: 1.35rem; color: var(--green); margin-bottom: 4px; }
+    .playground-out h2 { color: var(--blue); margin: 4px 0; font-size: 1.1rem; }
+    .playground-out p  { color: var(--text); margin: 3px 0; }
+    .playground-out li { color: var(--text); margin-left: 20px; }
+    .playground-out span { color: var(--purple); font-weight: 500; }
+    .run-btn {
+      background: var(--purple); color: #ffffff; border: none; padding: 0 20px; height: 38px;
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      transition: background .15s; white-space: nowrap; display: inline-flex; align-items: center;
+    }
+    .run-btn:hover { background: var(--purple-light); }
+    .playground-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .example-select {
+      background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+      padding: 0 12px; height: 38px; border-radius: 8px; font-size: 0.85rem; flex: 1;
+      outline: none; cursor: pointer;
+    }
+    .example-select:focus { border-color: var(--purple); }
+
+    /* ── Live Demo Split ─────────────────────── */
+    .live-demo { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: stretch; margin: 16px 0; }
+    .live-demo .code-wrap { margin: 0; display: flex; flex-direction: column; }
+    .live-demo .code-wrap pre { flex: 1; }
+    .live-preview { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); }
+    .live-preview-header { padding: 9px 16px; border-bottom: 1px solid var(--border); font-size: 0.75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; justify-content: space-between; background: var(--bg3); }
+    .live-preview-body { padding: 16px; flex: 1; font-size: 0.9rem; }
+    .live-preview-body table { margin: 0; }
+    .live-preview-body ul { padding-left: 18px; }
+    .try-btn { background: var(--purple); color: #fff; border: none; border-radius: 5px; padding: 3px 10px; font-size: 0.74rem; font-weight: 600; cursor: pointer; text-transform: none; letter-spacing: 0; }
+    .try-btn:hover { background: var(--purple-light); }
+    @media (max-width: 860px) { .live-demo { grid-template-columns: 1fr; } }
+
+    /* ── Footer ──────────────────────────────── */
+    footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 36px 40px; text-align: center; color: var(--muted); font-size: 0.86rem; margin-left: var(--sidebar-w); }
+    footer a { color: var(--purple); text-decoration: none; font-weight: 500; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Mobile ──────────────────────────────── */
+    .hamburger { display: none; background: none; border: none; color: var(--text); font-size: 1.3rem; cursor: pointer; }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      footer { margin-left: 0; }
+      .hamburger { display: block; }
+      .playground { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 2rem; }
+      .page { padding: 32px 20px; }
+      .topnav { padding: 12px 20px; }
+      .feature-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <h1>⚡ MyLang.js</h1>
+    <span>v1.0.0 — HTML Tag Scripting</span>
+  </div>
+
+  <div class="sidebar-section" data-i18n="nav.gettingStarted">Getting Started</div>
+  <a class="sidebar-link active" href="#introduction" data-i18n="nav.introduction">Introduction</a>
+  <a class="sidebar-link" href="#install" data-i18n="nav.install">Installation</a>
+  <a class="sidebar-link" href="#quickstart" data-i18n="nav.quickstart">Quick Start</a>
+  <a class="sidebar-link" href="#playground" data-i18n="nav.playground">Playground</a>
+
+  <div class="sidebar-section" data-i18n="nav.tags">Tags Reference</div>
+  <a class="sidebar-link sidebar-tag" href="#tag-let">&lt;let&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-print">&lt;print&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-for">&lt;for&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-each">&lt;each&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-repeat">&lt;repeat&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-while">&lt;while&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-dowhile">&lt;dowhile&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-if">&lt;if&gt; / &lt;elif&gt; / &lt;else&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-switch">&lt;switch&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-map">&lt;map&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-filter">&lt;filter&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-reduce">&lt;reduce&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-try">&lt;try&gt;</a>
+  <a class="sidebar-link sidebar-tag" href="#tag-break">&lt;break&gt; / &lt;continue&gt;</a>
+
+  <div class="sidebar-section" data-i18n="nav.advanced">Advanced</div>
+  <a class="sidebar-link" href="#api" data-i18n="nav.api">JavaScript API</a>
+  <a class="sidebar-link" href="#config" data-i18n="nav.config">Configuration</a>
+  <a class="sidebar-link" href="#security" data-i18n="nav.security">Security</a>
+  <a class="sidebar-link" href="#typescript" data-i18n="nav.typescript">TypeScript</a>
+  <a class="sidebar-link" href="#builtins" data-i18n="nav.builtins">Built-in Helpers</a>
+
+  <div class="sidebar-section">Backend &amp; Multi-Lang</div>
+  <a class="sidebar-link" href="#integrations">PHP / Python / Node / Go</a>
+
+  <div class="sidebar-section" data-i18n="nav.examples">Examples</div>
+  <a class="sidebar-link" href="#ex-todo" data-i18n="nav.exTodo">To-Do List</a>
+  <a class="sidebar-link" href="#ex-table" data-i18n="nav.exTable">Data Table</a>
+  <a class="sidebar-link" href="#ex-ecommerce">E-Commerce Invoice</a>
+  <a class="sidebar-link" href="#ex-fizzbuzz" data-i18n="nav.exFizzbuzz">FizzBuzz</a>
+  <a class="sidebar-link" href="#ex-prime" data-i18n="nav.exPrime">Prime Numbers</a>
+</nav>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<div class="main">
+
+  <!-- Top Nav -->
+  <header class="topnav">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+      <span style="font-weight:600;font-size:.95rem">MyLang.js</span>
+      <span class="badge">v1.0.0</span>
+    </div>
+    <div class="topnav-right">
+      <input class="search-box" type="search" id="search" placeholder="Search docs..." />
+      <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+      <a class="btn btn-outline" href="https://github.com/abhinandanacharya/nova-deooratives" target="_blank" style="font-size:.8rem;padding:5px 12px;">GitHub ↗</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="introduction">
+    <div class="page" style="padding-top:0;padding-bottom:0;">
+      <h2><span data-i18n="hero.title">HTML-tag scripting,</span><br/><span style="color:var(--text)" data-i18n="hero.title2">zero build step.</span></h2>
+      <p data-i18n="hero.desc">Write for loops, if conditions, map, filter, and reduce as readable custom HTML tags. No webpack. No JSX. Just a &lt;script&gt; tag.</p>
+      <div class="hero-btns">
+        <a class="btn btn-primary" href="#quickstart" data-i18n="hero.start">Get Started →</a>
+        <a class="btn btn-outline" href="#playground" data-i18n="hero.playground">Try Playground</a>
+        <a class="btn btn-outline" href="https://npmjs.com/package/nova-deooratives" target="_blank">NPM ↗</a>
+      </div>
+      <div style="margin-top:28px;display:flex;justify-content:center;gap:32px;font-size:.82rem;color:var(--muted);">
+        <span>⚡ ~8KB min+gzip</span>
+        <span>🔒 Secure eval sandbox</span>
+        <span>📘 TypeScript ready</span>
+        <span>🌐 CDN + NPM</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="page">
+
+    <!-- ═══ Install ═════════════════════════════════════════ -->
+    <section id="install">
+      <h2 class="section-title" data-i18n="install.title">Installation</h2>
+
+      <div class="install-tabs">
+        <button class="install-tab active" onclick="switchInstall(this,'cdn')">CDN</button>
+        <button class="install-tab" onclick="switchInstall(this,'npm')">NPM</button>
+        <button class="install-tab" onclick="switchInstall(this,'esm')">ESM Import</button>
+        <button class="install-tab" onclick="switchInstall(this,'cjs')">CommonJS</button>
+      </div>
+
+      <div id="install-cdn" class="install-panel active">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">&lt;!-- Latest minified (recommended) --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-comment">&lt;!-- Pin to a specific version --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/mylang-js@1.0.0/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-comment">&lt;!-- unpkg mirror --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://unpkg.com/mylang-js/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
+        </div>
+        <div class="alert alert-tip"><strong>✅ No build step needed!</strong> Drop the script tag, write <code>&lt;script type="text/mylang"&gt;</code> tags, and MyLang does the rest.</div>
+      </div>
+
+      <div id="install-npm" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">bash</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>npm install nova-deooratives
+# or
+yarn add nova-deooratives
+# or
+pnpm add nova-deooratives</code></pre>
+        </div>
+      </div>
+
+      <div id="install-esm" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">// Named import</span>
+import { MyLang } from 'nova-deooratives';
+
+<span class="tok-comment">// Default import</span>
+import MyLang from 'nova-deooratives';
+
+<span class="tok-comment">// Tree-shakeable utilities</span>
+import { createScope, BUILTINS } from 'nova-deooratives';</code></pre>
+        </div>
+      </div>
+
+      <div id="install-cjs" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">javascript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>const { MyLang } = require('nova-deooratives');
+// or
+const MyLang = require('nova-deooratives').default;</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Quick Start ═══════════════════════════════════════ -->
+    <section id="quickstart">
+      <h2 class="section-title" data-i18n="qs.title">Quick Start</h2>
+
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">html — your original example, working!</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-val">"text/mylang"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;for</span> <span class="tok-attr">data</span>=<span class="tok-val">"array(1,2,3,4)"</span> <span class="tok-attr">index</span>=<span class="tok-val">"default"</span> <span class="tok-attr">printable</span>=<span class="tok-val">"p"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;h1&gt;</span><span class="tok-interp">{{ p }}</span><span class="tok-tag">&lt;/h1&gt;</span>
+  <span class="tok-tag">&lt;/for&gt;</span>
+<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-comment">&lt;!-- Output: 1 2 3 4 as &lt;h1&gt; tags --&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ═══ Playground ════════════════════════════════════════ -->
+    <section id="playground">
+      <h2 class="section-title" data-i18n="pg.title">Live Playground</h2>
+      <div class="playground-controls">
+        <select class="example-select" id="exampleSelect" onchange="loadExample(this.value)">
+          <option value="">— Load an example —</option>
+          <option value="basic-for">Basic for loop</option>
+          <option value="nested-for">Nested for (multiplication table)</option>
+          <option value="if-elif">if / elif / else</option>
+          <option value="while">While loop (powers of 2)</option>
+          <option value="map-filter">Map + Filter pipeline</option>
+          <option value="fizzbuzz">FizzBuzz</option>
+          <option value="switch">Switch / case</option>
+          <option value="reduce">Reduce (sum)</option>
+        </select>
+        <button class="run-btn" onclick="runPlayground()">▶ Run</button>
+      </div>
+      <div class="playground">
+        <div>
+          <textarea id="playground-src" spellcheck="false" placeholder="Write MyLang here..."><for data="array(1,2,3,4)" index="default" printable="p">
+  <h1>{{ p }}</h1>
+</for></textarea>
+        </div>
+        <div>
+          <div class="playground-out" id="playground-out"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Tag Reference ═════════════════════════════════════ -->
+    <section id="tag-let">
+      <h2 class="section-title">&lt;let&gt; — Variables</h2>
+      <table>
+        <tr><th>Attribute</th><th>Type</th><th>Description</th></tr>
+        <tr><td><code>name</code></td><td>string</td><td>Variable name to declare</td></tr>
+        <tr><td><code>value</code> / <code>val</code></td><td>expression</td><td>Value to assign</td></tr>
+        <tr><td><code>upper</code></td><td>flag</td><td>Modify the variable in the parent (enclosing) scope</td></tr>
+      </table>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-comment">&lt;!-- Declare --&gt;</span>
+<span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"x"</span> <span class="tok-attr">value</span>=<span class="tok-val">"42"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"users"</span> <span class="tok-attr">value</span>=<span class="tok-val">"array({name:'Alice'},{name:'Bob'})"</span> <span class="tok-tag">/&gt;</span>
+
+<span class="tok-comment">&lt;!-- Mutate counter inside a while loop --&gt;</span>
+<span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"n"</span> <span class="tok-attr">value</span>=<span class="tok-val">"0"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;while</span> <span class="tok-attr">cond</span>=<span class="tok-val">"n &lt; 5"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span><span class="tok-interp">{{ n }}</span><span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"n"</span> <span class="tok-attr">value</span>=<span class="tok-val">"n + 1"</span> <span class="tok-attr">upper</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;/while&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-print">
+      <h2 class="section-title">&lt;print&gt; &amp; Interpolation</h2>
+      <p>Output any expression inline using <code>{{ expr }}</code> in text/attributes, or explicitly with <code>&lt;print value="expr" /&gt;</code>. Use <code>&lt;log value="expr" /&gt;</code> for console debugging.</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"user"</span> <span class="tok-attr">value</span>=<span class="tok-val">"{ name: 'Alice', score: 95 }"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>Hello, <span class="tok-interp">{{ user.name }}</span>! Score: <span class="tok-tag">&lt;print</span> <span class="tok-attr">value</span>=<span class="tok-val">"user.score + 5"</span> <span class="tok-tag">/&gt;</span><span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;log</span> <span class="tok-attr">value</span>=<span class="tok-val">"user"</span> <span class="tok-tag">/&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-for">
+      <h2 class="section-title">&lt;for&gt; — All Loop Modes</h2>
+      <div class="tag-grid">
+        <div class="tag-card"><div class="tag-card-name">data="expr"</div><div class="tag-card-desc">Iterate an array or object</div></div>
+        <div class="tag-card"><div class="tag-card-name">of="expr"</div><div class="tag-card-desc">for-of (any iterable)</div></div>
+        <div class="tag-card"><div class="tag-card-name">in="expr"</div><div class="tag-card-desc">for-in (object keys)</div></div>
+        <div class="tag-card"><div class="tag-card-name">range="s,e,step"</div><div class="tag-card-desc">Numeric range shorthand</div></div>
+        <div class="tag-card"><div class="tag-card-name">init cond step</div><div class="tag-card-desc">Classic C-style for loop</div></div>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">all for modes</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-comment">&lt;!-- data= mode --&gt;</span>
+<span class="tok-tag">&lt;for</span> <span class="tok-attr">data</span>=<span class="tok-val">"array('a','b','c')"</span> <span class="tok-attr">as</span>=<span class="tok-val">"v"</span> <span class="tok-attr">index</span>=<span class="tok-val">"i"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span><span class="tok-interp">{{ i }}</span>: <span class="tok-interp">{{ v }}</span><span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/for&gt;</span>
+
+<span class="tok-comment">&lt;!-- range= mode --&gt;</span>
+<span class="tok-tag">&lt;for</span> <span class="tok-attr">range</span>=<span class="tok-val">"0,10,2"</span> <span class="tok-attr">as</span>=<span class="tok-val">"n"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span><span class="tok-interp">{{ n }}</span><span class="tok-tag">&lt;/span&gt;</span>
+<span class="tok-tag">&lt;/for&gt;</span>
+
+<span class="tok-comment">&lt;!-- Classic C-style --&gt;</span>
+<span class="tok-tag">&lt;for</span> <span class="tok-attr">init</span>=<span class="tok-val">"i=0"</span> <span class="tok-attr">cond</span>=<span class="tok-val">"i&lt;5"</span> <span class="tok-attr">step</span>=<span class="tok-val">"i++"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span>i = <span class="tok-interp">{{ i }}</span><span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/for&gt;</span>
+
+<span class="tok-comment">&lt;!-- Nested for (multiplication table) --&gt;</span>
+<span class="tok-tag">&lt;table&gt;</span>
+  <span class="tok-tag">&lt;for</span> <span class="tok-attr">range</span>=<span class="tok-val">"1,4"</span> <span class="tok-attr">as</span>=<span class="tok-val">"row"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;tr&gt;</span>
+      <span class="tok-tag">&lt;for</span> <span class="tok-attr">range</span>=<span class="tok-val">"1,4"</span> <span class="tok-attr">as</span>=<span class="tok-val">"col"</span><span class="tok-tag">&gt;</span>
+        <span class="tok-tag">&lt;td&gt;</span><span class="tok-interp">{{ row*col }}</span><span class="tok-tag">&lt;/td&gt;</span>
+      <span class="tok-tag">&lt;/for&gt;</span>
+    <span class="tok-tag">&lt;/tr&gt;</span>
+  <span class="tok-tag">&lt;/for&gt;</span>
+<span class="tok-tag">&lt;/table&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-each">
+      <h2 class="section-title">&lt;each&gt; — Shorthand For-Each</h2>
+      <p>Clean shorthand for iterating arrays and iterables with optional <code>index</code> and <code>separator</code>.</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;each</span> <span class="tok-attr">of</span>=<span class="tok-val">"array('HTML', 'CSS', 'JS')"</span> <span class="tok-attr">as</span>=<span class="tok-val">"tech"</span> <span class="tok-attr">index</span>=<span class="tok-val">"i"</span> <span class="tok-attr">separator</span>=<span class="tok-val">" • "</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>#<span class="tok-interp">{{ i + 1 }}</span> <span class="tok-interp">{{ tech }}</span><span class="tok-tag">&lt;/span&gt;</span>
+<span class="tok-tag">&lt;/each&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-repeat">
+      <h2 class="section-title">&lt;repeat&gt; — Repeat N Times</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;repeat</span> <span class="tok-attr">times</span>=<span class="tok-val">"5"</span> <span class="tok-attr">index</span>=<span class="tok-val">"i"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span>⭐<span class="tok-tag">&lt;/span&gt;</span>
+<span class="tok-tag">&lt;/repeat&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-while">
+      <h2 class="section-title">&lt;while&gt; &amp; &lt;dowhile&gt;</h2>
+      <p id="tag-dowhile">Use <code>&lt;let ... upper /&gt;</code> to update the loop counter in the parent scope. <code>&lt;dowhile&gt;</code> always executes its body at least once.</p>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"n"</span> <span class="tok-attr">value</span>=<span class="tok-val">"1"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;while</span> <span class="tok-attr">cond</span>=<span class="tok-val">"n &lt;= 16"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span><span class="tok-interp">{{ n }}</span> <span class="tok-tag">&lt;/span&gt;</span>
+  <span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"n"</span> <span class="tok-attr">value</span>=<span class="tok-val">"n * 2"</span> <span class="tok-attr">upper</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;/while&gt;</span>
+
+<span class="tok-tag">&lt;let</span> <span class="tok-attr">name</span>=<span class="tok-val">"x"</span> <span class="tok-attr">value</span>=<span class="tok-val">"10"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;dowhile</span> <span class="tok-attr">cond</span>=<span class="tok-val">"x &lt; 5"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span>Runs once even when x=<span class="tok-interp">{{ x }}</span><span class="tok-tag">&lt;/p&gt;</span>
+<span class="tok-tag">&lt;/dowhile&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-if">
+      <h2 class="section-title">&lt;if&gt; / &lt;elif&gt; / &lt;else&gt;</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;if</span> <span class="tok-attr">cond</span>=<span class="tok-val">"score &gt;= 90"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;p&gt;</span>🏆 A Grade<span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;elif</span> <span class="tok-attr">cond</span>=<span class="tok-val">"score &gt;= 70"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>✅ B Grade<span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;/elif&gt;</span>
+  <span class="tok-tag">&lt;else&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span>❌ Below average<span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;/else&gt;</span>
+<span class="tok-tag">&lt;/if&gt;</span></code></pre>
+      </div>
+      <div class="alert alert-info"><strong>Note:</strong> <code>&lt;elif&gt;</code> and <code>&lt;else&gt;</code> are always children of <code>&lt;if&gt;</code>, not siblings. You can have unlimited <code>&lt;elif&gt;</code> branches.</div>
+    </section>
+
+    <section id="tag-switch">
+      <h2 class="section-title">&lt;switch&gt; / &lt;case&gt; / &lt;default&gt;</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;switch</span> <span class="tok-attr">value</span>=<span class="tok-val">"role"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;case</span> <span class="tok-attr">match</span>=<span class="tok-val">"'Admin'"</span><span class="tok-tag">&gt;&lt;span&gt;</span>🛡️ Full Access<span class="tok-tag">&lt;/span&gt;&lt;/case&gt;</span>
+  <span class="tok-tag">&lt;case</span> <span class="tok-attr">match</span>=<span class="tok-val">"'Editor'"</span><span class="tok-tag">&gt;&lt;span&gt;</span>✏️ Can Edit<span class="tok-tag">&lt;/span&gt;&lt;/case&gt;</span>
+  <span class="tok-tag">&lt;default&gt;&lt;span&gt;</span>👁️ Read Only<span class="tok-tag">&lt;/span&gt;&lt;/default&gt;</span>
+<span class="tok-tag">&lt;/switch&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-map">
+      <h2 class="section-title">&lt;map&gt; / <span id="tag-filter">&lt;filter&gt;</span> / <span id="tag-reduce">&lt;reduce&gt;</span></h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-comment">&lt;!-- map --&gt;</span>
+<span class="tok-tag">&lt;map</span> <span class="tok-attr">data</span>=<span class="tok-val">"array(1,2,3,4,5)"</span> <span class="tok-attr">as</span>=<span class="tok-val">"n"</span> <span class="tok-attr">separator</span>=<span class="tok-val">", "</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;b&gt;</span><span class="tok-interp">{{ n * n }}</span><span class="tok-tag">&lt;/b&gt;</span>
+<span class="tok-tag">&lt;/map&gt;</span>
+<span class="tok-comment">&lt;!-- Output: 1, 4, 9, 16, 25 --&gt;</span>
+
+<span class="tok-comment">&lt;!-- filter: only even numbers --&gt;</span>
+<span class="tok-tag">&lt;filter</span> <span class="tok-attr">data</span>=<span class="tok-val">"range(1,20)"</span> <span class="tok-attr">where</span>=<span class="tok-val">"$v % 2 === 0"</span> <span class="tok-attr">as</span>=<span class="tok-val">"n"</span> <span class="tok-attr">separator</span>=<span class="tok-val">" "</span><span class="tok-tag">&gt;</span>
+  <span class="tok-interp">{{ n }}</span>
+<span class="tok-tag">&lt;/filter&gt;</span>
+
+<span class="tok-comment">&lt;!-- reduce: sum --&gt;</span>
+<span class="tok-tag">&lt;reduce</span> <span class="tok-attr">data</span>=<span class="tok-val">"array(10,20,30,40)"</span> <span class="tok-attr">acc</span>=<span class="tok-val">"sum"</span> <span class="tok-attr">init</span>=<span class="tok-val">"0"</span>
+        <span class="tok-attr">item</span>=<span class="tok-val">"n"</span> <span class="tok-attr">expr</span>=<span class="tok-val">"sum + n"</span> <span class="tok-attr">save</span>=<span class="tok-val">"total"</span> <span class="tok-tag">/&gt;</span>
+<span class="tok-tag">&lt;p&gt;</span>Total = <span class="tok-interp">{{ total }}</span><span class="tok-tag">&lt;/p&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-try">
+      <h2 class="section-title">&lt;try&gt; / &lt;catch&gt; / &lt;finally&gt;</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;try&gt;</span>
+  <span class="tok-tag">&lt;print</span> <span class="tok-attr">value</span>=<span class="tok-val">"parse(rawInput)"</span> <span class="tok-tag">/&gt;</span>
+  <span class="tok-tag">&lt;catch</span> <span class="tok-attr">as</span>=<span class="tok-val">"err"</span><span class="tok-tag">&gt;&lt;p&gt;</span>Caught: <span class="tok-interp">{{ err }}</span><span class="tok-tag">&lt;/p&gt;&lt;/catch&gt;</span>
+  <span class="tok-tag">&lt;finally&gt;&lt;p&gt;</span>Cleanup complete<span class="tok-tag">&lt;/p&gt;&lt;/finally&gt;</span>
+<span class="tok-tag">&lt;/try&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <section id="tag-break">
+      <h2 class="section-title">&lt;break /&gt; &amp; &lt;continue /&gt;</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">mylang</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-tag">&lt;for</span> <span class="tok-attr">range</span>=<span class="tok-val">"1,10"</span> <span class="tok-attr">as</span>=<span class="tok-val">"n"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;if</span> <span class="tok-attr">cond</span>=<span class="tok-val">"n === 3"</span><span class="tok-tag">&gt;&lt;continue</span> <span class="tok-tag">/&gt;&lt;/if&gt;</span>
+  <span class="tok-tag">&lt;if</span> <span class="tok-attr">cond</span>=<span class="tok-val">"n === 7"</span><span class="tok-tag">&gt;&lt;break</span> <span class="tok-tag">/&gt;&lt;/if&gt;</span>
+  <span class="tok-tag">&lt;span&gt;</span><span class="tok-interp">{{ n }}</span> <span class="tok-tag">&lt;/span&gt;</span>
+<span class="tok-tag">&lt;/for&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ═══ Multi-Language Backend Integrations ══════════════ -->
+    <section id="integrations">
+      <h2 class="section-title">Multi-Language Integrations (PHP, Python, Node, Go)</h2>
+      <p>Pass arrays or objects from any backend controller into your view using <code>data-scope='...'</code> (inline JSON) or <code>data-var="GLOBAL_NAME"</code> on <code>&lt;script type="text/mylang"&gt;</code>.</p>
+
+      <div class="install-tabs" style="margin-top:16px;">
+        <button class="install-tab active" onclick="switchLangTab(this,'php')">PHP / Laravel</button>
+        <button class="install-tab" onclick="switchLangTab(this,'python')">Python (Flask / Django)</button>
+        <button class="install-tab" onclick="switchLangTab(this,'node')">Node.js / Express</button>
+        <button class="install-tab" onclick="switchLangTab(this,'go')">Go / Ruby</button>
+      </div>
+
+      <div id="lang-php" class="install-panel active">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">php — Controller → View Table</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">// Controller: pass $users array to view</span>
+&lt;?php
+$users = [
+  ["name" =&gt; "Alice", "role" =&gt; "Admin", "active" =&gt; true],
+  ["name" =&gt; "Bob",   "role" =&gt; "User",  "active" =&gt; false],
+];
+$json = json_encode(["users" =&gt; $users], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT);
+?&gt;
+
+<span class="tok-comment">&lt;!-- View: render table with nova-deooratives --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-val">"text/mylang"</span> <span class="tok-attr">data-scope</span>=<span class="tok-val">'&lt;?= $json ?&gt;'</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;table&gt;</span>
+    <span class="tok-tag">&lt;tr&gt;&lt;th&gt;</span>#<span class="tok-tag">&lt;/th&gt;&lt;th&gt;</span>Name<span class="tok-tag">&lt;/th&gt;&lt;th&gt;</span>Role<span class="tok-tag">&lt;/th&gt;&lt;th&gt;</span>Status<span class="tok-tag">&lt;/th&gt;&lt;/tr&gt;</span>
+    <span class="tok-tag">&lt;for</span> <span class="tok-attr">of</span>=<span class="tok-val">"users"</span> <span class="tok-attr">as</span>=<span class="tok-val">"u"</span> <span class="tok-attr">index</span>=<span class="tok-val">"i"</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr&gt;</span>
+        <span class="tok-tag">&lt;td&gt;</span><span class="tok-interp">{{ i + 1 }}</span><span class="tok-tag">&lt;/td&gt;</span>
+        <span class="tok-tag">&lt;td&gt;</span><span class="tok-interp">{{ u.name }}</span><span class="tok-tag">&lt;/td&gt;</span>
+        <span class="tok-tag">&lt;td&gt;</span><span class="tok-interp">{{ u.role }}</span><span class="tok-tag">&lt;/td&gt;</span>
+        <span class="tok-tag">&lt;td&gt;</span><span class="tok-tag">&lt;if</span> <span class="tok-attr">cond</span>=<span class="tok-val">"u.active"</span><span class="tok-tag">&gt;</span>Active<span class="tok-tag">&lt;else&gt;</span>Inactive<span class="tok-tag">&lt;/else&gt;&lt;/if&gt;&lt;/td&gt;</span>
+      <span class="tok-tag">&lt;/tr&gt;</span>
+    <span class="tok-tag">&lt;/for&gt;</span>
+  <span class="tok-tag">&lt;/table&gt;</span>
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+        </div>
+      </div>
+
+      <div id="lang-python" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">python (Flask / Django)</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment"># Flask / Django Controller</span>
+return render_template("users.html", payload=json.dumps({"users": users}))
+
+<span class="tok-comment">&lt;!-- View (Jinja2 / Django Template) --&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-val">"text/mylang"</span> <span class="tok-attr">data-scope</span>=<span class="tok-val">'{{ payload | safe }}'</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;table&gt;</span>
+    <span class="tok-tag">&lt;for</span> <span class="tok-attr">of</span>=<span class="tok-val">"users"</span> <span class="tok-attr">as</span>=<span class="tok-val">"u"</span><span class="tok-tag">&gt;</span>
+      <span class="tok-tag">&lt;tr&gt;&lt;td&gt;</span><span class="tok-interp">{{ u.name }}</span><span class="tok-tag">&lt;/td&gt;&lt;td&gt;</span><span class="tok-interp">{{ u.email }}</span><span class="tok-tag">&lt;/td&gt;&lt;/tr&gt;</span>
+    <span class="tok-tag">&lt;/for&gt;</span>
+  <span class="tok-tag">&lt;/table&gt;</span>
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+        </div>
+      </div>
+
+      <div id="lang-node" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">javascript (Node.js / Express)</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">// Express route passing array to HTML view</span>
+const scopeJson = JSON.stringify({ orders }).replace(/'/g, "&amp;#39;");
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-val">"text/mylang"</span> <span class="tok-attr">data-scope</span>=<span class="tok-val">'${scopeJson}'</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;for</span> <span class="tok-attr">of</span>=<span class="tok-val">"orders"</span> <span class="tok-attr">as</span>=<span class="tok-val">"o"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;p&gt;</span><span class="tok-interp">{{ o.id }}</span> — $<span class="tok-interp">{{ o.total }}</span><span class="tok-tag">&lt;/p&gt;</span>
+  <span class="tok-tag">&lt;/for&gt;</span>
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+        </div>
+      </div>
+
+      <div id="lang-go" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">go / ruby</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">// Go (html/template) or Ruby (ERB): pass JSON via window variable + data-var</span>
+<span class="tok-tag">&lt;script&gt;</span>window.PAGE_DATA = &lt;%= @data.to_json.html_safe %&gt;;<span class="tok-tag">&lt;/script&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">type</span>=<span class="tok-val">"text/mylang"</span> <span class="tok-attr">data-var</span>=<span class="tok-val">"PAGE_DATA"</span><span class="tok-tag">&gt;</span>
+  <span class="tok-tag">&lt;for</span> <span class="tok-attr">of</span>=<span class="tok-val">"items"</span> <span class="tok-attr">as</span>=<span class="tok-val">"item"</span><span class="tok-tag">&gt;</span>
+    <span class="tok-tag">&lt;li&gt;</span><span class="tok-interp">{{ item.name }}</span><span class="tok-tag">&lt;/li&gt;</span>
+  <span class="tok-tag">&lt;/for&gt;</span>
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Security ══════════════════════════════════════════ -->
+    <section id="security">
+      <h2 class="section-title" data-i18n="sec.title">Security Model</h2>
+      <div class="alert alert-warn">
+        <strong>⚠️ User-generated templates:</strong> Do not render untrusted user input as MyLang templates. While the evaluator blocks most attack vectors, MyLang templates should be treated like HTML — trusted content only.
+      </div>
+      <ul class="feature-list" style="margin-top:16px;">
+        <li>Expressions run in strict-mode sandboxed Function</li>
+        <li>20+ dangerous globals explicitly shadowed/blocked</li>
+        <li>No access to window, document, eval, Function</li>
+        <li>No fetch, XHR, localStorage, crypto, setTimeout</li>
+        <li>Prototype poisoning prevented via null-prototype scopes</li>
+        <li>Output is DOM text nodes, never innerHTML</li>
+        <li>Loop iteration hard-capped (default 100,000)</li>
+        <li>Expression compile cache bounded at 512 entries</li>
+      </ul>
+    </section>
+
+    <!-- ═══ TypeScript ════════════════════════════════════════ -->
+    <section id="typescript">
+      <h2 class="section-title">TypeScript Support</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">typescript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code>import MyLang, {
+  type RenderOptions,
+  type MyLangConfig,
+  type IScope,
+  type MyLangError,
+  createScope,
+  BUILTINS,
+} from 'nova-deooratives';
+
+<span class="tok-comment">// Fully typed render call</span>
+const options: RenderOptions = {
+  scope: { users: [{ name: 'Alice', age: 30 }] },
+  maxIterations: 50_000,
+  onError: (err: MyLangError) =&gt; {
+    console.error(err.type, err.message, err.expression);
+  },
+};
+
+MyLang.render(template, container, options);
+
+<span class="tok-comment">// Typed scope manipulation</span>
+const scope: IScope = createScope(null, { x: 10, y: 20 });
+scope.set('z', scope.get('x') as number + (scope.get('y') as number));
+
+<span class="tok-comment">// Typed evaluate</span>
+const result: unknown = MyLang.evaluate('x * 2', { x: 21 });
+console.log(result); <span class="tok-comment">// 42</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ═══ JS API ═════════════════════════════════════════════ -->
+    <section id="api">
+      <h2 class="section-title">JavaScript API</h2>
+      <table>
+        <tr><th>Method</th><th>Signature</th><th>Description</th></tr>
+        <tr><td><code>render()</code></td><td><code>(template, container, options?)</code></td><td>Render template HTML into a DOM element</td></tr>
+        <tr><td><code>mount()</code></td><td><code>(options?)</code></td><td>Auto-run all <code>&lt;script type="text/mylang"&gt;</code> tags</td></tr>
+        <tr><td><code>evaluate()</code></td><td><code>(expr, scope?) → unknown</code></td><td>Evaluate a single expression</td></tr>
+        <tr><td><code>createScope()</code></td><td><code>(parent?, initial?) → IScope</code></td><td>Create a new lexical scope</td></tr>
+        <tr><td><code>version</code></td><td><code>string</code></td><td>Current version ("1.0.0")</td></tr>
+        <tr><td><code>config</code></td><td><code>MyLangConfig</code></td><td>Read / write global configuration</td></tr>
+      </table>
+    </section>
+
+    <!-- ═══ Configuration & Builtins ══════════════════════════ -->
+    <section id="config">
+      <h2 class="section-title">Configuration</h2>
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">javascript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code>MyLang.config = {
+  maxIterations: 50_000,       <span class="tok-comment">// safety cap for loops (default: 100,000)</span>
+  warnOnError: true,           <span class="tok-comment">// log warnings to console</span>
+  delimiters: ['{{', '}}'],    <span class="tok-comment">// custom interpolation delimiters</span>
+  onError(err) {               <span class="tok-comment">// custom error callback</span>
+    console.error('[MyLang]', err.type, err.message, err.expression);
+  },
+};</code></pre>
+      </div>
+    </section>
+
+    <section id="builtins">
+      <h2 class="section-title">Built-in Helpers</h2>
+      <table>
+        <tr><th>Helper</th><th>Description</th><th>Example</th></tr>
+        <tr><td><code>array(...)</code></td><td>Create an array</td><td><code>array(1, 2, 3)</code></td></tr>
+        <tr><td><code>range(s, e, step?)</code></td><td>Generate numeric range</td><td><code>range(0, 10, 2)</code></td></tr>
+        <tr><td><code>len(v)</code></td><td>Length of array, string, or object</td><td><code>len(users)</code></td></tr>
+        <tr><td><code>keys(obj)</code></td><td>Object keys array</td><td><code>keys(user)</code></td></tr>
+        <tr><td><code>values(obj)</code></td><td>Object values array</td><td><code>values(user)</code></td></tr>
+        <tr><td><code>entries(obj)</code></td><td>Array of <code>[key, value]</code> pairs</td><td><code>entries(user)</code></td></tr>
+        <tr><td><code>str(v)</code> / <code>num(v)</code> / <code>bool(v)</code></td><td>Type conversions</td><td><code>num("42") + 8</code></td></tr>
+        <tr><td><code>json(v)</code> / <code>parse(s)</code></td><td>JSON stringify &amp; parse</td><td><code>json(items)</code></td></tr>
+        <tr><td><code>Math</code></td><td>Standard JS Math object</td><td><code>Math.round(4.6)</code></td></tr>
+      </table>
+    </section>
+
+    <!-- ═══ Real-World Examples ══════════════════════════════ -->
+    <section id="ex-todo">
+      <h2 class="section-title">Real-World: To-Do List</h2>
+      <p>Track tasks with conditional status icons and a live completion counter via <code>&lt;reduce&gt;</code>.</p>
+      <div class="live-demo">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code id="code-todo">&lt;let name="todos" value="array(
+  {text:'Buy groceries', done:true},
+  {text:'Write docs', done:false},
+  {text:'Ship v1.0', done:false}
+)" /&gt;
+&lt;ul&gt;
+  &lt;each of="todos" as="todo" index="i"&gt;
+    &lt;li&gt;
+      &lt;if cond="todo.done"&gt;
+        ✅ &lt;s&gt;{{ todo.text }}&lt;/s&gt;
+        &lt;else&gt;⬜ {{ todo.text }}&lt;/else&gt;
+      &lt;/if&gt;
+    &lt;/li&gt;
+  &lt;/each&gt;
+&lt;/ul&gt;
+&lt;reduce data="todos" acc="done" init="0"
+        item="t" expr="done + (t.done ? 1 : 0)" save="doneCount" /&gt;
+&lt;p&gt;&lt;b&gt;{{ doneCount }} / {{ len(todos) }}&lt;/b&gt; complete&lt;/p&gt;</code></pre>
+        </div>
+        <div class="live-preview">
+          <div class="live-preview-header"><span>Live Output</span><button class="try-btn" onclick="tryInPlayground('code-todo')">▶ Try in Playground</button></div>
+          <div class="live-preview-body">
+            <script type="text/mylang">
+              <let name="todos" value="array({text:'Buy groceries', done:true},{text:'Write docs', done:false},{text:'Ship v1.0', done:false})" />
+              <ul>
+                <each of="todos" as="todo" index="i">
+                  <li>
+                    <if cond="todo.done">
+                      ✅ <s>{{ todo.text }}</s>
+                      <else>⬜ {{ todo.text }}</else>
+                    </if>
+                  </li>
+                </each>
+              </ul>
+              <reduce data="todos" acc="done" init="0" item="t" expr="done + (t.done ? 1 : 0)" save="doneCount" />
+              <p><b>{{ doneCount }} / {{ len(todos) }}</b> complete</p>
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ex-table">
+      <h2 class="section-title">Real-World: Controller → View Data Table</h2>
+      <p>Render a team directory table from a controller array (works identically with PHP <code>json_encode</code>, Python <code>json.dumps</code>, or Node.js).</p>
+      <div class="live-demo">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code id="code-table">&lt;let name="users" value="array(
+  {name:'Alice', role:'Admin', salary:95000, active:true},
+  {name:'Bob', role:'Developer', salary:82000, active:true},
+  {name:'Carol', role:'Designer', salary:70000, active:false}
+)" /&gt;
+&lt;reduce data="users" acc="s" init="0" item="u" expr="s + u.salary" save="payroll" /&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;#&lt;/th&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Role&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;
+  &lt;for of="users" as="u" index="i"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;{{ i + 1 }}&lt;/td&gt;
+      &lt;td&gt;&lt;b&gt;{{ u.name }}&lt;/b&gt;&lt;/td&gt;
+      &lt;td&gt;{{ u.role }}&lt;/td&gt;
+      &lt;td&gt;
+        &lt;if cond="u.active"&gt;🟢 Active&lt;else&gt;🔴 Inactive&lt;/else&gt;&lt;/if&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/for&gt;
+&lt;/table&gt;
+&lt;p style="margin-top:8px"&gt;Total Payroll: &lt;b&gt;${{ payroll }}&lt;/b&gt;&lt;/p&gt;</code></pre>
+        </div>
+        <div class="live-preview">
+          <div class="live-preview-header"><span>Live Output</span><button class="try-btn" onclick="tryInPlayground('code-table')">▶ Try in Playground</button></div>
+          <div class="live-preview-body">
+            <script type="text/mylang">
+              <let name="users" value="array({name:'Alice', role:'Admin', salary:95000, active:true},{name:'Bob', role:'Developer', salary:82000, active:true},{name:'Carol', role:'Designer', salary:70000, active:false})" />
+              <reduce data="users" acc="s" init="0" item="u" expr="s + u.salary" save="payroll" />
+              <table>
+                <tr><th>#</th><th>Name</th><th>Role</th><th>Status</th></tr>
+                <for of="users" as="u" index="i">
+                  <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td><b>{{ u.name }}</b></td>
+                    <td>{{ u.role }}</td>
+                    <td><if cond="u.active">🟢 Active<else>🔴 Inactive</else></if></td>
+                  </tr>
+                </for>
+              </table>
+              <p style="margin-top:8px">Total Payroll: <b>${{ payroll }}</b></p>
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ex-ecommerce">
+      <h2 class="section-title">Real-World: E-Commerce Invoice</h2>
+      <p>Compute line totals, filter in-stock items, and calculate grand total using <code>&lt;for&gt;</code> + <code>&lt;reduce&gt;</code>.</p>
+      <div class="live-demo">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code id="code-ecom">&lt;let name="cart" value="array(
+  {item:'Mechanical Keyboard', qty:1, price:89},
+  {item:'USB-C Hub', qty:2, price:25},
+  {item:'Laptop Stand', qty:1, price:45}
+)" /&gt;
+&lt;reduce data="cart" acc="t" init="0" item="c" expr="t + c.qty * c.price" save="subtotal" /&gt;
+&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;Item&lt;/th&gt;&lt;th&gt;Qty&lt;/th&gt;&lt;th&gt;Total&lt;/th&gt;&lt;/tr&gt;
+  &lt;for of="cart" as="c"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;{{ c.item }}&lt;/td&gt;
+      &lt;td&gt;{{ c.qty }}&lt;/td&gt;
+      &lt;td&gt;${{ c.qty * c.price }}&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/for&gt;
+&lt;/table&gt;
+&lt;p style="margin-top:8px"&gt;Subtotal: &lt;b&gt;${{ subtotal }}&lt;/b&gt;
+  &lt;if cond="subtotal &gt;= 150"&gt; (🎉 Free Shipping!)&lt;/if&gt;
+&lt;/p&gt;</code></pre>
+        </div>
+        <div class="live-preview">
+          <div class="live-preview-header"><span>Live Output</span><button class="try-btn" onclick="tryInPlayground('code-ecom')">▶ Try in Playground</button></div>
+          <div class="live-preview-body">
+            <script type="text/mylang">
+              <let name="cart" value="array({item:'Mechanical Keyboard', qty:1, price:89},{item:'USB-C Hub', qty:2, price:25},{item:'Laptop Stand', qty:1, price:45})" />
+              <reduce data="cart" acc="t" init="0" item="c" expr="t + c.qty * c.price" save="subtotal" />
+              <table>
+                <tr><th>Item</th><th>Qty</th><th>Total</th></tr>
+                <for of="cart" as="c">
+                  <tr>
+                    <td>{{ c.item }}</td>
+                    <td>{{ c.qty }}</td>
+                    <td>${{ c.qty * c.price }}</td>
+                  </tr>
+                </for>
+              </table>
+              <p style="margin-top:8px">Subtotal: <b>${{ subtotal }}</b>
+                <if cond="subtotal >= 150"> (🎉 Free Shipping!)</if>
+              </p>
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ex-fizzbuzz">
+      <h2 class="section-title">Real-World: FizzBuzz (1–20)</h2>
+      <div class="live-demo">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code id="code-fb">&lt;for range="1,21" as="n" separator=" · "&gt;
+  &lt;if cond="n % 15 === 0"&gt;&lt;b&gt;FizzBuzz&lt;/b&gt;
+    &lt;elif cond="n % 3 === 0"&gt;&lt;b&gt;Fizz&lt;/b&gt;&lt;/elif&gt;
+    &lt;elif cond="n % 5 === 0"&gt;&lt;b&gt;Buzz&lt;/b&gt;&lt;/elif&gt;
+    &lt;else&gt;&lt;span&gt;{{ n }}&lt;/span&gt;&lt;/else&gt;
+  &lt;/if&gt;
+&lt;/for&gt;</code></pre>
+        </div>
+        <div class="live-preview">
+          <div class="live-preview-header"><span>Live Output</span><button class="try-btn" onclick="tryInPlayground('code-fb')">▶ Try in Playground</button></div>
+          <div class="live-preview-body">
+            <script type="text/mylang">
+              <for range="1,21" as="n" separator=" · ">
+                <if cond="n % 15 === 0"><b>FizzBuzz</b>
+                  <elif cond="n % 3 === 0"><b>Fizz</b></elif>
+                  <elif cond="n % 5 === 0"><b>Buzz</b></elif>
+                  <else><span>{{ n }}</span></else>
+                </if>
+              </for>
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ex-prime">
+      <h2 class="section-title">Real-World: Prime Numbers (2–50)</h2>
+      <div class="live-demo">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code id="code-prime">&lt;filter data="range(2,51)"
+        where="!range(2,Math.floor(Math.sqrt($v))+1).some(d =&gt; $v % d === 0)"
+        as="p" separator=", "&gt;
+  &lt;b&gt;{{ p }}&lt;/b&gt;
+&lt;/filter&gt;</code></pre>
+        </div>
+        <div class="live-preview">
+          <div class="live-preview-header"><span>Live Output</span><button class="try-btn" onclick="tryInPlayground('code-prime')">▶ Try in Playground</button></div>
+          <div class="live-preview-body">
+            <script type="text/mylang">
+              <filter data="range(2,51)" where="!range(2,Math.floor(Math.sqrt($v))+1).some(d => $v % d === 0)" as="p" separator=", ">
+                <b>{{ p }}</b>
+              </filter>
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /page -->
+
+  <footer>
+    <p>Built with ❤️ by <a href="https://github.com/abhinandanacharya" target="_blank">abhinandanacharya</a> · <a href="https://github.com/abhinandanacharya/nova-deooratives" target="_blank">GitHub</a> · <a href="https://npmjs.com/package/nova-deooratives" target="_blank">NPM</a> · MIT License</p>
+    <p style="margin-top:8px;">MyLang.js v1.0.0 · Also check out <a href="https://github.com/abhinandanacharya/nova-alert" target="_blank">nova-alert</a> and <a href="https://github.com/abhinandanacharya/nova-watch" target="_blank">nova-watch</a></p>
+  </footer>
+</div>
+
+<!-- Load MyLang for playground -->
+<script src="../dist/mylang.umd.js" onerror="loadFallback()"></script>
+<script>
+function loadFallback() {
+  // Fallback: load from CDN if local build not available
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js';
+  document.head.appendChild(s);
+}
+</script>
+<script>
+/* ═══ i18n ═══════════════════════════════════════════════════ */
+const TRANSLATIONS = {
+  en: {
+    'hero.title': 'HTML-tag scripting,',
+    'hero.title2': 'zero build step.',
+    'hero.desc': 'Write for loops, if conditions, map, filter, and reduce as readable custom HTML tags. No webpack. No JSX. Just a <script> tag.',
+    'hero.start': 'Get Started →',
+    'hero.playground': 'Try Playground',
+    'nav.gettingStarted': 'Getting Started',
+    'nav.introduction': 'Introduction',
+    'nav.install': 'Installation',
+    'nav.quickstart': 'Quick Start',
+    'nav.playground': 'Playground',
+    'nav.tags': 'Tags Reference',
+    'nav.advanced': 'Advanced',
+    'nav.api': 'JavaScript API',
+    'nav.config': 'Configuration',
+    'nav.security': 'Security',
+    'nav.typescript': 'TypeScript',
+    'nav.builtins': 'Built-in Helpers',
+    'nav.examples': 'Examples',
+    'nav.exTodo': 'To-Do List',
+    'nav.exTable': 'Data Table',
+    'nav.exFizzbuzz': 'FizzBuzz',
+    'nav.exPrime': 'Prime Numbers',
+    'install.title': 'Installation',
+    'qs.title': 'Quick Start',
+    'pg.title': 'Live Playground',
+    'sec.title': 'Security Model',
+  },
+  hi: {
+    'hero.title': 'HTML-टैग स्क्रिप्टिंग,',
+    'hero.title2': 'बिना बिल्ड स्टेप।',
+    'hero.desc': 'for लूप, if कंडीशन, map, filter और reduce को HTML टैग की तरह लिखें। कोई webpack नहीं, कोई JSX नहीं।',
+    'hero.start': 'शुरू करें →',
+    'hero.playground': 'Playground आज़माएं',
+    'nav.gettingStarted': 'शुरू करें',
+    'nav.introduction': 'परिचय',
+    'nav.install': 'इंस्टॉलेशन',
+    'nav.quickstart': 'त्वरित शुरुआत',
+    'nav.playground': 'Playground',
+    'nav.tags': 'टैग संदर्भ',
+    'nav.advanced': 'उन्नत',
+    'nav.api': 'JavaScript API',
+    'nav.config': 'कॉन्फ़िगरेशन',
+    'nav.security': 'सुरक्षा',
+    'nav.typescript': 'TypeScript',
+    'nav.builtins': 'अंतर्निहित सहायक',
+    'nav.examples': 'उदाहरण',
+    'nav.exTodo': 'कार्य सूची',
+    'nav.exTable': 'डेटा तालिका',
+    'nav.exFizzbuzz': 'FizzBuzz',
+    'nav.exPrime': 'अभाज्य संख्याएं',
+    'install.title': 'इंस्टॉलेशन',
+    'qs.title': 'त्वरित शुरुआत',
+    'pg.title': 'लाइव Playground',
+    'sec.title': 'सुरक्षा मॉडल',
+  },
+  zh: {
+    'hero.title': 'HTML标签脚本语言，',
+    'hero.title2': '零构建步骤。',
+    'hero.desc': '用可读的自定义HTML标签编写for循环、if条件、map、filter和reduce。无需webpack，无需JSX。',
+    'hero.start': '开始使用 →',
+    'hero.playground': '试用Playground',
+    'nav.gettingStarted': '快速入门',
+    'nav.introduction': '介绍',
+    'nav.install': '安装',
+    'nav.quickstart': '快速开始',
+    'nav.playground': 'Playground',
+    'nav.tags': '标签参考',
+    'nav.advanced': '高级',
+    'nav.api': 'JavaScript API',
+    'nav.config': '配置',
+    'nav.security': '安全',
+    'nav.typescript': 'TypeScript',
+    'nav.builtins': '内置函数',
+    'nav.examples': '示例',
+    'nav.exTodo': '待办事项',
+    'nav.exTable': '数据表格',
+    'nav.exFizzbuzz': 'FizzBuzz',
+    'nav.exPrime': '质数',
+    'install.title': '安装',
+    'qs.title': '快速开始',
+    'pg.title': '在线Playground',
+    'sec.title': '安全模型',
+  },
+  es: {
+    'hero.title': 'Scripting con etiquetas HTML,',
+    'hero.title2': 'sin paso de compilación.',
+    'hero.desc': 'Escribe bucles for, condiciones if, map, filter y reduce como etiquetas HTML. Sin webpack. Sin JSX.',
+    'hero.start': 'Comenzar →',
+    'hero.playground': 'Probar Playground',
+    'nav.gettingStarted': 'Comenzar',
+    'nav.introduction': 'Introducción',
+    'nav.install': 'Instalación',
+    'nav.quickstart': 'Inicio rápido',
+    'nav.playground': 'Playground',
+    'nav.tags': 'Referencia de etiquetas',
+    'nav.advanced': 'Avanzado',
+    'nav.api': 'API JavaScript',
+    'nav.config': 'Configuración',
+    'nav.security': 'Seguridad',
+    'nav.typescript': 'TypeScript',
+    'nav.builtins': 'Helpers integrados',
+    'nav.examples': 'Ejemplos',
+    'nav.exTodo': 'Lista de tareas',
+    'nav.exTable': 'Tabla de datos',
+    'nav.exFizzbuzz': 'FizzBuzz',
+    'nav.exPrime': 'Números primos',
+    'install.title': 'Instalación',
+    'qs.title': 'Inicio rápido',
+    'pg.title': 'Playground en vivo',
+    'sec.title': 'Modelo de seguridad',
+  },
+};
+
+let currentLang = localStorage.getItem('mylang-docs-lang') || 'en';
+
+function switchLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('mylang-docs-lang', lang);
+  document.documentElement.lang = lang;
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  document.getElementById('langSelect').value = lang;
+}
+
+/* ═══ Theme ═══════════════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.querySelector('.theme-btn').textContent = dark ? '🌙' : '☀️';
+  localStorage.setItem('mylang-theme', dark ? 'light' : 'dark');
+}
+
+/* ═══ Install tabs ══════════════════════════════════════════════ */
+function switchInstall(btn, panelId) {
+  document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('install-' + panelId).classList.add('active');
+}
+
+/* ═══ Copy code ══════════════════════════════════════════════════ */
+function copyCode(btn) {
+  const code = btn.closest('.code-wrap').querySelector('pre').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 1500);
+  });
+}
+
+/* ═══ Playground ═════════════════════════════════════════════════ */
+const EXAMPLES = {
+  'basic-for': `<for data="array(1,2,3,4)" index="default" printable="p">\n  <h1>{{ p }}</h1>\n</for>`,
+  'nested-for': `<table>\n  <for range="1,5" as="row">\n    <tr>\n      <for range="1,5" as="col">\n        <td>{{ row }}×{{ col }}={{ row*col }}</td>\n      </for>\n    </tr>\n  </for>\n</table>`,
+  'if-elif': `<for data="array(95,72,55,30)" as="score">\n  <if cond="score >= 90">\n    <p>{{ score }} → 🏆 A</p>\n    <elif cond="score >= 70"><p>{{ score }} → ✅ B</p></elif>\n    <elif cond="score >= 50"><p>{{ score }} → 📘 C</p></elif>\n    <else><p>{{ score }} → ❌ Fail</p></else>\n  </if>\n</for>`,
+  'while': `<let name="n" value="1" />\n<while cond="n <= 64">\n  <span>{{ n }} </span>\n  <let name="n" value="n*2" upper />\n</while>`,
+  'map-filter': `<filter data="range(2,20)" where="!range(2,Math.floor(Math.sqrt($v))+1).some(d => $v%d===0)" as="p" separator=" ">\n  <b>{{ p }}</b>\n</filter>`,
+  'fizzbuzz': `<for range="1,21" as="n">\n  <if cond="n%15===0"><p>FizzBuzz</p>\n    <elif cond="n%3===0"><p>Fizz</p></elif>\n    <elif cond="n%5===0"><p>Buzz</p></elif>\n    <else><p>{{ n }}</p></else>\n  </if>\n</for>`,
+  'switch': `<for data="array('sun','mon','fri','sat')" as="day">\n  <switch value="day">\n    <case match="'fri'"><p>{{ day }} 🎉 TGIF</p></case>\n    <case match="'sat'"><p>{{ day }} 😎 Weekend</p></case>\n    <case match="'sun'"><p>{{ day }} 😴 Rest</p></case>\n    <default><p>{{ day }} 💼 Weekday</p></default>\n  </switch>\n</for>`,
+  'reduce': `<reduce data="array(10,20,30,40,50)" acc="sum" init="0" item="n" expr="sum+n" save="total" />\n<p>Sum = {{ total }}</p>\n<reduce data="array(10,20,30,40,50)" acc="mx" init="0" item="n" expr="n > mx ? n : mx" save="maxVal" />\n<p>Max = {{ maxVal }}</p>`,
+};
+
+function loadExample(key) {
+  if (!key) return;
+  document.getElementById('playground-src').value = EXAMPLES[key] || '';
+  runPlayground();
+}
+
+function runPlayground() {
+  const src = document.getElementById('playground-src').value;
+  const out = document.getElementById('playground-out');
+  if (typeof MyLang !== 'undefined') {
+    try {
+      MyLang.render(src, out);
+    } catch(e) {
+      out.innerHTML = '<p style="color:var(--red)">Error: ' + e.message + '</p>';
+    }
+  } else {
+    out.innerHTML = '<p style="color:var(--yellow)">MyLang.js not loaded yet — build the project first or use CDN.</p>';
+  }
+}
+
+/* ═══ Active sidebar link on scroll ══════════════════════════════ */
+const sections = document.querySelectorAll('section[id]');
+const links = document.querySelectorAll('.sidebar-link[href^="#"]');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.sidebar-link[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => observer.observe(s));
+
+function tryInPlayground(codeId) {
+  const el = document.getElementById(codeId);
+  if (!el) return;
+  document.getElementById('playground-src').value = el.textContent;
+  runPlayground();
+  document.getElementById('playground').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ═══ Backend integration tabs ══════════════════════════════════ */
+function switchLangTab(btn, panelId) {
+  const section = btn.closest('section');
+  section.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+  section.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('lang-' + panelId).classList.add('active');
+}
+
+/* ═══ Sidebar Search ════════════════════════════════════════════ */
+const searchInput = document.getElementById('search');
+if (searchInput) {
+  searchInput.addEventListener('input', function () {
+    const q = this.value.trim().toLowerCase();
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      const match = !q || link.textContent.toLowerCase().includes(q);
+      link.style.display = match ? 'block' : 'none';
+    });
+  });
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      const firstVisible = Array.from(document.querySelectorAll('.sidebar-link')).find(l => l.style.display !== 'none');
+      if (firstVisible) firstVisible.click();
+    }
+  });
+}
+
+/* ═══ Init ═══════════════════════════════════════════════════════ */
+(function init() {
+  // Default to clean light theme for readability
+  const savedTheme = localStorage.getItem('mylang-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.querySelector('.theme-btn').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+  // Auto-run playground on load
+  setTimeout(runPlayground, 150);
+})();
+</script>
+</body>
+</html>

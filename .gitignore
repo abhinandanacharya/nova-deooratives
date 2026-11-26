@@ -1,0 +1,5 @@
+node_modules/
+dist/ts-out/
+coverage/
+*.log
+.DS_Store

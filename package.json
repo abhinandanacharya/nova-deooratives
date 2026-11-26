@@ -1,0 +1,89 @@
+{
+  "name": "nova-deooratives",
+  "version": "1.0.0",
+  "description": "HTML-tag-based scripting language — write loops, conditionals, map/filter/reduce as custom HTML tags. Powered by JavaScript.",
+  "author": "abhinandanacharya",
+  "license": "MIT",
+  "homepage": "https://github.com/abhinandanacharya/nova-deooratives#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhinandanacharya/nova-deooratives.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abhinandanacharya/nova-deooratives/issues"
+  },
+  "keywords": [
+    "template", "templating", "html", "scripting", "dsl", "language",
+    "for-loop", "if-else", "map", "filter", "reduce", "frontend",
+    "no-build", "cdn", "vanilla-js", "typescript"
+  ],
+  "main": "./dist/mylang.cjs.js",
+  "module": "./dist/mylang.esm.js",
+  "browser": "./dist/mylang.umd.js",
+  "unpkg": "./dist/mylang.umd.min.js",
+  "jsdelivr": "./dist/mylang.umd.min.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mylang.esm.js",
+      "require": "./dist/mylang.cjs.js",
+      "browser": "./dist/mylang.umd.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./min": {
+      "import": "./dist/mylang.esm.min.js",
+      "require": "./dist/mylang.cjs.min.js",
+      "browser": "./dist/mylang.umd.min.js"
+    }
+  },
+  "files": [
+    "dist/",
+    "src/",
+    "types/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "npm run build:ts && npm run build:bundle && npm run build:min && npm run build:types",
+    "build:ts": "tsc --project tsconfig.build.json",
+    "build:bundle": "node scripts/build.mjs",
+    "build:min": "node scripts/minify.mjs",
+    "build:types": "tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --outDir dist/types",
+    "dev": "tsc --watch --project tsconfig.json",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "prepublishOnly": "npm run build && npm test",
+    "size": "size-limit",
+    "docs:dev": "node scripts/docs-dev.mjs",
+    "docs:build": "node scripts/docs-build.mjs",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0",
+    "esbuild": "^0.19.0",
+    "terser": "^5.24.0",
+    "jest": "^29.0.0",
+    "@jest/globals": "^29.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "size-limit": [
+    { "path": "dist/mylang.umd.min.js", "limit": "20 KB" },
+    { "path": "dist/mylang.esm.min.js", "limit": "20 KB" }
+  ]
+}
