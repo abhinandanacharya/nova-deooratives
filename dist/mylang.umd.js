@@ -1,5 +1,5 @@
 /*!
- * MyLang v1.0.0
+ * MyLang v2.0.0
  * (c) 2026 abhinandanacharya
  * Released under the MIT License
  * https://github.com/abhinandanacharya/nova-deooratives
