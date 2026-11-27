@@ -1,6 +1,6 @@
 {
   "name": "nova-deooratives",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "HTML-tag-based scripting language — write loops, conditionals, map/filter/reduce as custom HTML tags. Powered by JavaScript.",
   "author": "abhinandanacharya",
   "license": "MIT",
