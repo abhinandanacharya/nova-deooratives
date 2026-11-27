@@ -261,7 +261,7 @@
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <h1>⚡ MyLang.js</h1>
-    <span>v1.0.0 — HTML Tag Scripting</span>
+    <span>v2.0.0 — HTML Tag Scripting</span>
   </div>
 
   <div class="sidebar-section" data-i18n="nav.gettingStarted">Getting Started</div>
@@ -316,7 +316,7 @@
     <div style="display:flex;align-items:center;gap:12px;">
       <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
       <span style="font-weight:600;font-size:.95rem">MyLang.js</span>
-      <span class="badge">v1.0.0</span>
+      <span class="badge">v2.0.0</span>
     </div>
     <div class="topnav-right">
       <input class="search-box" type="search" id="search" placeholder="Search docs..." />
@@ -364,10 +364,10 @@
 <span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
 
 <span class="tok-comment">&lt;!-- jsDelivr via NPM (pinned version) --&gt;</span>
-<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/nova-deooratives@1.0.0/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/npm/nova-deooratives@2.0.0/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
 
 <span class="tok-comment">&lt;!-- unpkg mirror --&gt;</span>
-<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://unpkg.com/nova-deooratives@1.0.0/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://unpkg.com/nova-deooratives@2.0.0/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span></code></pre>
         </div>
         <div class="alert alert-tip"><strong>✅ No build step needed!</strong> Drop the script tag, write <code>&lt;script type="text/mylang"&gt;</code> tags, and MyLang does the rest.</div>
       </div>
@@ -924,7 +924,7 @@ console.log(result); <span class="tok-comment">// 42</span></code></pre>
         <tr><td><code>mount()</code></td><td><code>()</code></td><td>Auto-run all <code>&lt;script type="text/mylang"&gt;</code> tags on the page</td></tr>
         <tr><td><code>evaluate()</code></td><td><code>(expr, scope?) → unknown</code></td><td>Evaluate a single expression inside the safe sandbox</td></tr>
         <tr><td><code>createScope()</code></td><td><code>(parent?, initial?) → IScope</code></td><td>Create a lexical variable scope</td></tr>
-        <tr><td><code>version</code></td><td><code>string</code></td><td>Current library version (e.g. <code>"1.0.0"</code>)</td></tr>
+        <tr><td><code>version</code></td><td><code>string</code></td><td>Current library version (e.g. <code>"2.0.0"</code>)</td></tr>
         <tr><td><code>config</code></td><td><code>MyLangConfig</code></td><td>Read / write global defaults</td></tr>
       </table>
 
@@ -1422,7 +1422,7 @@ export function ReportBlock({ template, data }: { template: string; data: Record
 
   <footer>
     <p>Built with ❤️ by <a href="https://github.com/abhinandanacharya" target="_blank">abhinandanacharya</a> · <a href="https://github.com/abhinandanacharya/nova-deooratives" target="_blank">GitHub</a> · <a href="https://npmjs.com/package/nova-deooratives" target="_blank">NPM</a> · MIT License</p>
-    <p style="margin-top:8px;">MyLang.js v1.0.0 · Also check out <a href="https://github.com/abhinandanacharya/nova-alert" target="_blank">nova-alert</a> and <a href="https://github.com/abhinandanacharya/nova-watch" target="_blank">nova-watch</a></p>
+    <p style="margin-top:8px;">MyLang.js v2.0.0 · Also check out <a href="https://github.com/abhinandanacharya/nova-alert" target="_blank">nova-alert</a> and <a href="https://github.com/abhinandanacharya/nova-watch" target="_blank">nova-watch</a></p>
   </footer>
 </div>
 

@@ -8,9 +8,9 @@
 
 Write `for`, `while`, `if`, `map`, `filter`, `reduce` as custom HTML tags — no build step required.
 
-[![npm version](https://img.shields.io/npm/v/mylang-js?color=7c3aed&style=flat-square)](https://www.npmjs.com/package/nova-deooratives)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/mylang-js?color=06b6d4&style=flat-square)](https://bundlephobia.com/package/mylang-js)
-[![license](https://img.shields.io/npm/l/mylang-js?color=34d399&style=flat-square)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/nova-deooratives?color=7c3aed&style=flat-square)](https://www.npmjs.com/package/nova-deooratives)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/nova-deooratives?color=06b6d4&style=flat-square)](https://bundlephobia.com/package/nova-deooratives)
+[![license](https://img.shields.io/npm/l/nova-deooratives?color=34d399&style=flat-square)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-3178c6?style=flat-square)](https://www.typescriptlang.org/)
 
 [📖 Docs](https://abhinandanacharya.github.io/nova-deooratives) · [🚀 Playground](https://abhinandanacharya.github.io/nova-deooratives/playground) · [📦 NPM](https://npmjs.com/package/nova-deooratives) · [🌐 CDN](https://cdn.jsdelivr.net/npm/nova-deooratives/dist/mylang.umd.min.js)
@@ -39,8 +39,7 @@ MyLang lets you write complex logic inside HTML files using familiar tag-like sy
 <script src="https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"></script>
 
 <!-- jsDelivr (NPM) -->
-<script src="https://cdn.jsdelivr.net/npm/nova-deooratives@1.0.0/dist/mylang.umd.min.js"></script>
-```
+<script src="https://cdn.jsdelivr.net/npm/nova-deooratives@2.0.0/dist/mylang.umd.min.js"></script>
 
 <script type="text/mylang">
   <for data="array(1,2,3,4,5)" as="n">
@@ -234,7 +233,7 @@ MyLang.createScope(parent?: IScope | null, initial?: Record<string, unknown>): I
 MyLang.mount(): void
 
 // Version
-MyLang.version // "1.0.0"
+MyLang.version // "2.0.0"
 ```
 
 ---

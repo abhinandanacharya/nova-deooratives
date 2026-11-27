@@ -810,7 +810,7 @@ function createExecutor(config, evaluate) {
 }
 
 // src/index.ts
-var VERSION = "1.0.0";
+var VERSION = "2.0.0";
 var defaultConfig = {
   maxIterations: 1e5,
   warnOnError: true,

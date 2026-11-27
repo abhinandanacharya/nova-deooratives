@@ -8,7 +8,7 @@ export { BreakSignal, ContinueSignal } from "./types.js";
 export { createScope, Scope } from "./scope.js";
 export { BUILTINS } from "./evaluator.js";
 /** Current library version — keep in sync with package.json */
-export declare const VERSION = "1.0.0";
+export declare const VERSION = "2.0.0";
 /** The global MyLang instance */
 declare const MyLang: MyLangAPI;
 export default MyLang;

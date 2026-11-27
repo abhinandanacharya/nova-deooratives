@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.0] — 2026-11-27
+
+### Added & Fixed
+- Renamed NPM & GitHub package to `nova-deooratives`
+- Added `data-scope` and `data-var` support on `<script type="text/mylang">` for PHP, Python, Node.js, Go, and Ruby controller → view data passing
+- Fixed HTML5 table foster-parenting and self-closing custom tags by normalizing to `<template data-ml-tag="...">`
+- Fixed UMD bundle export so `window.MyLang.render` is directly callable
+- Added React & Next.js App Router integration guide, Security threat table, and 6 Developer Guides in `docs/index.html`
+
+---
+
 ## [1.0.0] — 2024-11-26
 
 ### Added

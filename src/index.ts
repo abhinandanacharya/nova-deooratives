@@ -30,7 +30,7 @@ export { createScope, Scope } from "./scope.js";
 export { BUILTINS } from "./evaluator.js";
 
 /** Current library version — keep in sync with package.json */
-export const VERSION = "1.0.0";
+export const VERSION = "2.0.0";
 
 /** Default global config */
 const defaultConfig: MyLangConfig = {

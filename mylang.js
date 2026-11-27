@@ -907,7 +907,7 @@
    * ═══════════════════════════════════════════════════════════ */
 
   const MyLang = {
-    version: "1.0.0",
+    version: "2.0.0",
 
     /** Manually render a MyLang template string into a container element */
     render(templateHTML, container, optionsOrScope) {
