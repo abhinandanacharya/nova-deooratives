@@ -150,9 +150,10 @@
     .tag-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 
     /* ── Feature list ───────────────────────── */
-    .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
-    .feature-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.92rem; color: var(--text); }
-    .feature-list li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .feature-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; margin: 20px 0; }
+    .feature-list li { position: relative; padding-left: 22px; font-size: 0.92rem; color: var(--text); line-height: 1.65; overflow-wrap: break-word; }
+    .feature-list li::before { content: "✓"; color: var(--green); font-weight: 700; position: absolute; left: 0; top: 0; }
+    .blog-article .feature-list { grid-template-columns: 1fr; gap: 10px; }
 
     /* ── Comparison table ───────────────────── */
     table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.88rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
@@ -215,6 +216,24 @@
     .try-btn:hover { background: var(--purple-light); }
     @media (max-width: 860px) { .live-demo { grid-template-columns: 1fr; } }
 
+    /* ── Blog / Guides ───────────────────────── */
+    .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 16px 0 24px; }
+    .blog-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; cursor: pointer; transition: all .15s; text-align: left; }
+    .blog-card:hover { border-color: var(--purple); transform: translateY(-1px); }
+    .blog-card.active { border-color: var(--purple); background: rgba(79, 70, 229, 0.06); box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15); }
+    .blog-card-num { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--purple); margin-bottom: 4px; }
+    .blog-card-title { font-size: 0.92rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+    .blog-card-meta { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+    .blog-article { display: none; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 28px; box-shadow: var(--shadow); }
+    .blog-article.active { display: block; }
+    .blog-article h3 { font-size: 1.3rem; color: var(--text); margin-bottom: 6px; }
+    .blog-article .blog-byline { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .blog-article h4 { font-size: 1rem; color: var(--purple); margin: 18px 0 8px; }
+    .param-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; margin: 14px 0; }
+    .param-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .param-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .param-item:first-child { padding-top: 0; }
+
     /* ── Footer ──────────────────────────────── */
     footer { background: var(--bg2); border-top: 1px solid var(--border); padding: 36px 40px; text-align: center; color: var(--muted); font-size: 0.86rem; margin-left: var(--sidebar-w); }
     footer a { color: var(--purple); text-decoration: none; font-weight: 500; }
@@ -274,8 +293,12 @@
   <a class="sidebar-link" href="#typescript" data-i18n="nav.typescript">TypeScript</a>
   <a class="sidebar-link" href="#builtins" data-i18n="nav.builtins">Built-in Helpers</a>
 
-  <div class="sidebar-section">Backend &amp; Multi-Lang</div>
+  <div class="sidebar-section">Backend &amp; Frameworks</div>
   <a class="sidebar-link" href="#integrations">PHP / Python / Node / Go</a>
+  <a class="sidebar-link" href="#react-nextjs">React &amp; Next.js</a>
+
+  <div class="sidebar-section">Guides &amp; Blog</div>
+  <a class="sidebar-link" href="#blog-posts">6 Developer Guides</a>
 
   <div class="sidebar-section" data-i18n="nav.examples">Examples</div>
   <a class="sidebar-link" href="#ex-todo" data-i18n="nav.exTodo">To-Do List</a>
@@ -709,22 +732,152 @@ const scopeJson = JSON.stringify({ orders }).replace(/'/g, "&amp;#39;");
       </div>
     </section>
 
+    <!-- ═══ React & Next.js ══════════════════════════════════ -->
+    <section id="react-nextjs">
+      <h2 class="section-title">Using with React &amp; Next.js</h2>
+      <p>Install via NPM (<code>npm install nova-deooratives</code>) and render inside a <code>useRef</code> container using <code>useEffect</code>. In Next.js App Router, mark the renderer component with <code>'use client'</code> because <code>MyLang.render()</code> updates the browser DOM.</p>
+
+      <div class="install-tabs" style="margin-top:16px;">
+        <button class="install-tab active" onclick="switchFrameworkTab(this,'react')">React (Vite / CRA)</button>
+        <button class="install-tab" onclick="switchFrameworkTab(this,'nextjs')">Next.js (App Router)</button>
+      </div>
+
+      <div id="fw-react" class="install-panel active">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">tsx — MyLangView.tsx (React)</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>import { useEffect, useRef } from 'react';
+import MyLang from 'nova-deooratives';
+
+interface Props {
+  template: string;
+  scope?: Record&lt;string, unknown&gt;;
+}
+
+export function MyLangView({ template, scope = {} }: Props) {
+  const containerRef = useRef&lt;HTMLDivElement&gt;(null);
+
+  useEffect(() =&gt; {
+    if (!containerRef.current) return;
+    MyLang.render(template, containerRef.current, { scope });
+  }, [template, JSON.stringify(scope)]);
+
+  return &lt;div ref={containerRef} className="mylang-output" /&gt;;
+}
+
+<span class="tok-comment">// Usage in App.tsx:</span>
+export default function App() {
+  const users = [
+    { name: 'Alice', role: 'Admin', active: true },
+    { name: 'Bob',   role: 'User',  active: false },
+  ];
+
+  return (
+    &lt;MyLangView
+      scope={{ users }}
+      template={`
+        &lt;table&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Role&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;
+          &lt;for of="users" as="u"&gt;
+            &lt;tr&gt;
+              &lt;td&gt;{{ u.name }}&lt;/td&gt;
+              &lt;td&gt;{{ u.role }}&lt;/td&gt;
+              &lt;td&gt;&lt;if cond="u.active"&gt;Active&lt;else&gt;Inactive&lt;/else&gt;&lt;/if&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/for&gt;
+        &lt;/table&gt;
+      `}
+    /&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+
+      <div id="fw-nextjs" class="install-panel">
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">tsx — Next.js App Router (Server → Client)</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code><span class="tok-comment">// 1. components/MyLangRenderer.tsx (Client Component)</span>
+'use client';
+import { useEffect, useRef } from 'react';
+import MyLang from 'nova-deooratives';
+
+export default function MyLangRenderer({
+  template,
+  scope = {},
+}: {
+  template: string;
+  scope?: Record&lt;string, unknown&gt;;
+}) {
+  const ref = useRef&lt;HTMLDivElement&gt;(null);
+
+  useEffect(() =&gt; {
+    if (ref.current) {
+      MyLang.render(template, ref.current, { scope });
+    }
+  }, [template, JSON.stringify(scope)]);
+
+  return &lt;div ref={ref} /&gt;;
+}
+
+<span class="tok-comment">// 2. app/users/page.tsx (Server Component)</span>
+import MyLangRenderer from '@/components/MyLangRenderer';
+
+export default async function UsersPage() {
+  const res = await fetch('https://api.example.com/users', { cache: 'no-store' });
+  const users = await res.json();
+
+  return (
+    &lt;main&gt;
+      &lt;h1&gt;Users&lt;/h1&gt;
+      &lt;MyLangRenderer
+        scope={{ users }}
+        template={`
+          &lt;ul&gt;
+            &lt;for of="users" as="u"&gt;
+              &lt;li&gt;{{ u.name }} — {{ u.email }}&lt;/li&gt;
+            &lt;/for&gt;
+          &lt;/ul&gt;
+        `}
+      /&gt;
+    &lt;/main&gt;
+  );
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
     <!-- ═══ Security ══════════════════════════════════════════ -->
     <section id="security">
-      <h2 class="section-title" data-i18n="sec.title">Security Model</h2>
-      <div class="alert alert-warn">
-        <strong>⚠️ User-generated templates:</strong> Do not render untrusted user input as MyLang templates. While the evaluator blocks most attack vectors, MyLang templates should be treated like HTML — trusted content only.
-      </div>
-      <ul class="feature-list" style="margin-top:16px;">
-        <li>Expressions run in strict-mode sandboxed Function</li>
-        <li>20+ dangerous globals explicitly shadowed/blocked</li>
-        <li>No access to window, document, eval, Function</li>
-        <li>No fetch, XHR, localStorage, crypto, setTimeout</li>
-        <li>Prototype poisoning prevented via null-prototype scopes</li>
-        <li>Output is DOM text nodes, never innerHTML</li>
-        <li>Loop iteration hard-capped (default 100,000)</li>
-        <li>Expression compile cache bounded at 512 entries</li>
-      </ul>
+      <h2 class="section-title" data-i18n="sec.title">Security, Attacks &amp; Safety</h2>
+      <p>Developers often ask: <em>"Is it safe to pass user data into MyLang?"</em> Yes — as long as you pass data through <code>scope</code> / <code>data-scope</code> and keep the <strong>template structure itself</strong> developer-authored.</p>
+
+      <table>
+        <tr><th>Scenario / Threat</th><th>Protection</th><th>Status</th></tr>
+        <tr>
+          <td><strong>XSS in Data</strong><br/>e.g. <code>name = "&lt;script&gt;alert(1)&lt;/script&gt;"</code></td>
+          <td><code>{{ expr }}</code> and <code>&lt;print&gt;</code> create DOM <code>Text</code> nodes (<code>document.createTextNode</code>), never <code>innerHTML</code>. HTML tags inside data are rendered literally as safe text.</td>
+          <td>✅ Protected</td>
+        </tr>
+        <tr>
+          <td><strong>Global Hijacking</strong><br/>e.g. <code>{{ window.location }}</code>, <code>{{ fetch(...) }}</code></td>
+          <td>35+ dangerous globals (<code>window</code>, <code>document</code>, <code>eval</code>, <code>Function</code>, <code>fetch</code>, <code>localStorage</code>, <code>crypto</code>, <code>setTimeout</code>, <code>process</code>) are shadowed to <code>undefined</code> before strict-mode evaluation.</td>
+          <td>✅ Blocked</td>
+        </tr>
+        <tr>
+          <td><strong>Prototype Pollution</strong><br/>e.g. <code>__proto__</code> lookup</td>
+          <td>All lexical scopes are created with <code>Object.create(null)</code> (null-prototype objects), preventing prototype-chain tampering.</td>
+          <td>✅ Protected</td>
+        </tr>
+        <tr>
+          <td><strong>Infinite Loop DoS</strong><br/>e.g. <code>&lt;while cond="true"&gt;</code></td>
+          <td>Every loop (<code>&lt;for&gt;</code>, <code>&lt;while&gt;</code>, <code>&lt;dowhile&gt;</code>, <code>&lt;repeat&gt;</code>) has a hard safety cap (<code>maxIterations: 100,000</code> by default).</td>
+          <td>✅ Capped</td>
+        </tr>
+        <tr>
+          <td><strong>Untrusted Template Strings</strong><br/>e.g. letting users type raw <code>&lt;script&gt;</code> tags</td>
+          <td>Treat MyLang templates like HTML files — never concatenate raw user input into the template string itself; pass user input via <code>scope</code> instead.</td>
+          <td>⚠️ Developer Rule</td>
+        </tr>
+      </table>
     </section>
 
     <!-- ═══ TypeScript ════════════════════════════════════════ -->
@@ -767,13 +920,63 @@ console.log(result); <span class="tok-comment">// 42</span></code></pre>
       <h2 class="section-title">JavaScript API</h2>
       <table>
         <tr><th>Method</th><th>Signature</th><th>Description</th></tr>
-        <tr><td><code>render()</code></td><td><code>(template, container, options?)</code></td><td>Render template HTML into a DOM element</td></tr>
-        <tr><td><code>mount()</code></td><td><code>(options?)</code></td><td>Auto-run all <code>&lt;script type="text/mylang"&gt;</code> tags</td></tr>
-        <tr><td><code>evaluate()</code></td><td><code>(expr, scope?) → unknown</code></td><td>Evaluate a single expression</td></tr>
-        <tr><td><code>createScope()</code></td><td><code>(parent?, initial?) → IScope</code></td><td>Create a new lexical scope</td></tr>
-        <tr><td><code>version</code></td><td><code>string</code></td><td>Current version ("1.0.0")</td></tr>
-        <tr><td><code>config</code></td><td><code>MyLangConfig</code></td><td>Read / write global configuration</td></tr>
+        <tr><td><code>render()</code></td><td><code>(template, container, options?)</code></td><td>Compile and render a MyLang template string into a DOM element</td></tr>
+        <tr><td><code>mount()</code></td><td><code>()</code></td><td>Auto-run all <code>&lt;script type="text/mylang"&gt;</code> tags on the page</td></tr>
+        <tr><td><code>evaluate()</code></td><td><code>(expr, scope?) → unknown</code></td><td>Evaluate a single expression inside the safe sandbox</td></tr>
+        <tr><td><code>createScope()</code></td><td><code>(parent?, initial?) → IScope</code></td><td>Create a lexical variable scope</td></tr>
+        <tr><td><code>version</code></td><td><code>string</code></td><td>Current library version (e.g. <code>"1.0.0"</code>)</td></tr>
+        <tr><td><code>config</code></td><td><code>MyLangConfig</code></td><td>Read / write global defaults</td></tr>
       </table>
+
+      <h3 class="sub-title">Understanding <code>MyLang.render(template, container, options?)</code></h3>
+      <div class="param-box">
+        <div class="param-item">
+          <strong>1. <code>template</code> (<code>string</code>)</strong> — A string containing HTML + MyLang tags (<code>&lt;for&gt;</code>, <code>&lt;if&gt;</code>, <code>{{ expr }}</code>). You can write it with JS backticks <code>`...`</code> or read it from an element.
+        </div>
+        <div class="param-item">
+          <strong>2. <code>container</code> (<code>Element</code>)</strong> — The real DOM element on your page where the generated HTML will be inserted (for example, <code>document.getElementById('app')</code> or a React <code>ref.current</code>).
+        </div>
+        <div class="param-item">
+          <strong>3. <code>options</code> (<code>RenderOptions</code>, optional)</strong> — Configuration object:
+          <ul style="margin-top:6px;padding-left:20px;">
+            <li><code>scope</code>: Object of variables to pass into the template (e.g. <code>{ users: [...], title: 'Team' }</code>)</li>
+            <li><code>clear</code>: <code>true</code> (default) replaces existing content in <code>container</code>; set <code>false</code> to append</li>
+            <li><code>maxIterations</code>: Override loop safety cap for this render call</li>
+            <li><code>onError</code>: Callback <code>(err) =&gt; void</code> for debugging expression errors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><span class="code-lang">html + js — Complete render() Example</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+        <pre><code><span class="tok-comment">&lt;!-- 1. The container in your HTML --&gt;</span>
+<span class="tok-tag">&lt;div</span> <span class="tok-attr">id</span>=<span class="tok-val">"app"</span><span class="tok-tag">&gt;&lt;/div&gt;</span>
+
+<span class="tok-tag">&lt;script</span> <span class="tok-attr">src</span>=<span class="tok-val">"https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"</span><span class="tok-tag">&gt;&lt;/script&gt;</span>
+<span class="tok-tag">&lt;script&gt;</span>
+  <span class="tok-comment">// 2. The template string</span>
+  const template = `
+    &lt;h2&gt;{{ title }}&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;for of="items" as="item" index="i"&gt;
+        &lt;li&gt;{{ i + 1 }}. {{ item }}&lt;/li&gt;
+      &lt;/for&gt;
+    &lt;/ul&gt;
+  `;
+
+  <span class="tok-comment">// 3. The container DOM element</span>
+  const container = document.getElementById('app');
+
+  <span class="tok-comment">// 4. Render with options.scope</span>
+  MyLang.render(template, container, {
+    scope: {
+      title: 'Shopping List',
+      items: ['Milk', 'Bread', 'Coffee']
+    },
+    clear: true
+  });
+<span class="tok-tag">&lt;/script&gt;</span></code></pre>
+      </div>
     </section>
 
     <!-- ═══ Configuration & Builtins ══════════════════════════ -->
@@ -806,6 +1009,208 @@ console.log(result); <span class="tok-comment">// 42</span></code></pre>
         <tr><td><code>json(v)</code> / <code>parse(s)</code></td><td>JSON stringify &amp; parse</td><td><code>json(items)</code></td></tr>
         <tr><td><code>Math</code></td><td>Standard JS Math object</td><td><code>Math.round(4.6)</code></td></tr>
       </table>
+    </section>
+
+    <!-- ═══ 6 Developer Blog Posts & Guides ══════════════════ -->
+    <section id="blog-posts">
+      <h2 class="section-title">Developer Guides &amp; Blog Posts (6 Tutorials)</h2>
+      <p>Step-by-step articles with complete, copy-pasteable code for beginners and production teams.</p>
+
+      <div class="blog-grid">
+        <button class="blog-card active" onclick="switchBlog(this, 1)">
+          <div class="blog-card-num">Guide 01 · Basics</div>
+          <div class="blog-card-title">Replacing Messy JS innerHTML Loops with &lt;for&gt; &amp; {{ }}</div>
+          <div class="blog-card-meta">3 min read · Before &amp; After</div>
+        </button>
+        <button class="blog-card" onclick="switchBlog(this, 2)">
+          <div class="blog-card-num">Guide 02 · Core API</div>
+          <div class="blog-card-title">Understanding render(template, container, options)</div>
+          <div class="blog-card-meta">4 min read · Dynamic UI</div>
+        </button>
+        <button class="blog-card" onclick="switchBlog(this, 3)">
+          <div class="blog-card-num">Guide 03 · Backend</div>
+          <div class="blog-card-title">PHP &amp; Laravel: Controller Arrays to HTML Tables</div>
+          <div class="blog-card-meta">5 min read · data-scope</div>
+        </button>
+        <button class="blog-card" onclick="switchBlog(this, 4)">
+          <div class="blog-card-num">Guide 04 · Frameworks</div>
+          <div class="blog-card-title">Using nova-deooratives with React &amp; Next.js App Router</div>
+          <div class="blog-card-meta">5 min read · TypeScript</div>
+        </button>
+        <button class="blog-card" onclick="switchBlog(this, 5)">
+          <div class="blog-card-num">Guide 05 · Functional</div>
+          <div class="blog-card-title">Data Pipelines in HTML: &lt;filter&gt;, &lt;map&gt; &amp; &lt;reduce&gt;</div>
+          <div class="blog-card-meta">4 min read · Zero JS</div>
+        </button>
+        <button class="blog-card" onclick="switchBlog(this, 6)">
+          <div class="blog-card-num">Guide 06 · Security</div>
+          <div class="blog-card-title">XSS, Prototype Pollution &amp; Sandboxed Expressions</div>
+          <div class="blog-card-meta">5 min read · Production Safety</div>
+        </button>
+      </div>
+
+      <!-- Post 1 -->
+      <article id="blog-1" class="blog-article active">
+        <h3>1. Replacing Messy JS <code>innerHTML</code> Loops with <code>&lt;for&gt;</code> &amp; <code>{{ }}</code></h3>
+        <div class="blog-byline">Beginner Guide · Zero Build Step · Works in any HTML file</div>
+        <p>Normally, rendering an array in plain HTML requires writing verbose <code>document.createElement</code> calls or building fragile string-concatenated <code>innerHTML</code> templates. With <strong>nova-deooratives</strong>, your loop lives right inside your HTML markup.</p>
+        <h4>Before (Vanilla JS String Building)</h4>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">javascript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>let html = '&lt;ul&gt;';
+for (let i = 0; i &lt; items.length; i++) {
+  html += `&lt;li&gt;${i + 1}. ${items[i]}&lt;/li&gt;`;
+}
+html += '&lt;/ul&gt;';
+document.getElementById('list').innerHTML = html;</code></pre>
+        </div>
+        <h4>After (nova-deooratives)</h4>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>&lt;script src="https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/mylang"&gt;
+  &lt;let name="items" value="array('HTML', 'CSS', 'JavaScript')" /&gt;
+  &lt;ul&gt;
+    &lt;for of="items" as="item" index="i"&gt;
+      &lt;li&gt;{{ i + 1 }}. {{ item }}&lt;/li&gt;
+    &lt;/for&gt;
+  &lt;/ul&gt;
+&lt;/script&gt;</code></pre>
+        </div>
+        <p><strong>Why it's better:</strong> No manual DOM queries, automatic text-node escaping (preventing XSS), and readable tag nesting.</p>
+      </article>
+
+      <!-- Post 2 -->
+      <article id="blog-2" class="blog-article">
+        <h3>2. Understanding <code>MyLang.render(template, container, options)</code> Inside Out</h3>
+        <div class="blog-byline">Core API · Dynamic Re-rendering · Search &amp; Filters</div>
+        <p>Auto-mounting <code>&lt;script type="text/mylang"&gt;</code> is great for static pages, but when data changes dynamically (like typing in a search box or receiving an API response), you call <code>MyLang.render()</code>.</p>
+        <h4>How the 3 arguments work together</h4>
+        <p>Think of <code>render(template, container, options)</code> as: <em>"Take this <strong>template</strong> string, inject <strong>options.scope</strong> variables into it, and place the resulting HTML inside this <strong>container</strong> DOM element."</em></p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">javascript</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>const container = document.getElementById('results');
+const template = `
+  &lt;p&gt;Showing {{ len(users) }} users:&lt;/p&gt;
+  &lt;for of="users" as="u"&gt;&lt;div&gt;{{ u.name }}&lt;/div&gt;&lt;/for&gt;
+`;
+
+// Re-render whenever you fetch new data
+fetch('/api/users')
+  .then(r =&gt; r.json())
+  .then(users =&gt; {
+    MyLang.render(template, container, {
+      scope: { users },
+      clear: true, // replaces old results cleanly
+      onError: (err) =&gt; console.warn('Template issue:', err.message)
+    });
+  });</code></pre>
+        </div>
+      </article>
+
+      <!-- Post 3 -->
+      <article id="blog-3" class="blog-article">
+        <h3>3. PHP &amp; Laravel Guide: Passing Controller Arrays to Views</h3>
+        <div class="blog-byline">Backend Integration · PHP 5.6 / 7 / 8 · Laravel / CodeIgniter</div>
+        <p>Instead of mixing <code>&lt;?php foreach ($orders as $o): ?&gt;</code> and <code>&lt;?php if (...) : ?&gt;</code> inside your HTML tables, pass your controller array once as JSON in <code>data-scope</code>.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">php</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>&lt;?php
+// In your Controller:
+$orders = [
+  ["id" =&gt; "ORD-1", "customer" =&gt; "Alice", "total" =&gt; 120, "paid" =&gt; true],
+  ["id" =&gt; "ORD-2", "customer" =&gt; "Bob",   "total" =&gt; 45,  "paid" =&gt; false],
+];
+$json = json_encode(["orders" =&gt; $orders], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+?&gt;
+
+&lt;script src="https://cdn.jsdelivr.net/gh/abhinandanacharya/nova-deooratives@main/dist/mylang.umd.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/mylang" data-scope='&lt;?= $json ?&gt;'&gt;
+  &lt;table&gt;
+    &lt;tr&gt;&lt;th&gt;Order&lt;/th&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Total&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;
+    &lt;for of="orders" as="o"&gt;
+      &lt;tr&gt;
+        &lt;td&gt;{{ o.id }}&lt;/td&gt;
+        &lt;td&gt;{{ o.customer }}&lt;/td&gt;
+        &lt;td&gt;${{ o.total }}&lt;/td&gt;
+        &lt;td&gt;&lt;if cond="o.paid"&gt;✅ Paid&lt;else&gt;⏳ Pending&lt;/else&gt;&lt;/if&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/for&gt;
+  &lt;/table&gt;
+&lt;/script&gt;</code></pre>
+        </div>
+        <p><strong>Tip:</strong> Always pass <code>JSON_HEX_APOS | JSON_HEX_QUOT</code> in PHP <code>json_encode()</code> so quotes inside customer names never break the HTML <code>data-scope='...'</code> attribute.</p>
+      </article>
+
+      <!-- Post 4 -->
+      <article id="blog-4" class="blog-article">
+        <h3>4. Using <code>nova-deooratives</code> in React &amp; Next.js (App Router)</h3>
+        <div class="blog-byline">Frontend Frameworks · TypeScript · Server &amp; Client Components</div>
+        <p>When building CMS-driven widgets, email previews, or admin report templates inside React or Next.js, you can store the template string in a config/DB and render it via a lightweight <code>'use client'</code> wrapper.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">tsx — Reusable Client Component</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>'use client';
+import { useEffect, useRef } from 'react';
+import MyLang from 'nova-deooratives';
+
+export function ReportBlock({ template, data }: { template: string; data: Record&lt;string, unknown&gt; }) {
+  const ref = useRef&lt;HTMLDivElement&gt;(null);
+
+  useEffect(() =&gt; {
+    if (ref.current) {
+      MyLang.render(template, ref.current, { scope: data });
+    }
+  }, [template, JSON.stringify(data)]);
+
+  return &lt;div ref={ref} /&gt;;
+}</code></pre>
+        </div>
+        <p>Because <code>MyLang.render()</code> runs inside <code>useEffect</code>, Next.js never executes DOM code during SSR, avoiding hydration mismatches.</p>
+      </article>
+
+      <!-- Post 5 -->
+      <article id="blog-5" class="blog-article">
+        <h3>5. Functional Data Pipelines in HTML: <code>&lt;filter&gt;</code>, <code>&lt;map&gt;</code> &amp; <code>&lt;reduce&gt;</code></h3>
+        <div class="blog-byline">Zero-JS Logic · Chaining with save="..."</div>
+        <p>You can chain data transformations directly in markup using the <code>save="varName"</code> attribute. First filter an array, then compute totals with <code>&lt;reduce&gt;</code>, then display the result.</p>
+        <div class="code-wrap">
+          <div class="code-header"><span class="code-lang">html</span><button class="code-copy" onclick="copyCode(this)">Copy</button></div>
+          <pre><code>&lt;let name="sales" value="array(
+  { region: 'North', amount: 400, paid: true },
+  { region: 'South', amount: 150, paid: false },
+  { region: 'East',  amount: 600, paid: true }
+)" /&gt;
+
+&lt;!-- Step 1: Keep only paid sales --&gt;
+&lt;filter data="sales" where="$v.paid" save="paidSales"&gt;&lt;/filter&gt;
+
+&lt;!-- Step 2: Sum paid sales --&gt;
+&lt;reduce data="paidSales" acc="sum" init="0" item="s" expr="sum + s.amount" save="totalPaid" /&gt;
+
+&lt;!-- Step 3: Render summary + list --&gt;
+&lt;p&gt;Paid orders: {{ len(paidSales) }} | Total: &lt;b&gt;${{ totalPaid }}&lt;/b&gt;&lt;/p&gt;
+&lt;map data="paidSales" as="s" separator=", "&gt;
+  &lt;span&gt;{{ s.region }} (${{ s.amount }})&lt;/span&gt;
+&lt;/map&gt;</code></pre>
+        </div>
+      </article>
+
+      <!-- Post 6 -->
+      <article id="blog-6" class="blog-article">
+        <h3>6. Security Deep Dive: XSS, Prototype Pollution &amp; Sandbox Safety</h3>
+        <div class="blog-byline">Security Architecture · Production Best Practices</div>
+        <p>Every templating engine must answer two questions: <em>"Can user data inject HTML/JS?"</em> and <em>"Can expressions access sensitive browser APIs?"</em></p>
+        <h4>How nova-deooratives protects your app</h4>
+        <ul class="feature-list">
+          <li><strong>TextNode Escaping:</strong> <code>{{ user.bio }}</code> creates a DOM <code>Text</code> node via <code>document.createTextNode()</code> — even <code>&lt;img src=x onerror=alert(1)&gt;</code> in data is rendered harmlessly as plain text.</li>
+          <li><strong>Shadowed Globals:</strong> 35+ APIs (<code>window</code>, <code>document</code>, <code>fetch</code>, <code>localStorage</code>, <code>eval</code>, <code>Function</code>, <code>crypto</code>, <code>setTimeout</code>) are shadowed with local <code>var</code> declarations before <code>"use strict"</code>.</li>
+          <li><strong>Null-Prototype Scopes:</strong> Every scope uses <code>Object.create(null)</code>, blocking prototype-chain lookups.</li>
+          <li><strong>DoS Loop Cap:</strong> Infinite loops like <code>&lt;while cond="true"&gt;</code> stop at <code>maxIterations</code> (default <code>100,000</code>).</li>
+        </ul>
+        <div class="alert alert-warn">
+          <strong>Golden Rule:</strong> Always pass untrusted user values via <code>scope</code> / <code>data-scope</code>. Never build the <code>template</code> string itself by concatenating raw user input.
+        </div>
+      </article>
     </section>
 
     <!-- ═══ Real-World Examples ══════════════════════════════ -->
@@ -1240,6 +1645,22 @@ function tryInPlayground(codeId) {
   document.getElementById('playground-src').value = el.textContent;
   runPlayground();
   document.getElementById('playground').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ═══ Framework & Blog tabs ═════════════════════════════════════ */
+function switchFrameworkTab(btn, panelId) {
+  const section = btn.closest('section');
+  section.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
+  section.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('fw-' + panelId).classList.add('active');
+}
+
+function switchBlog(card, num) {
+  document.querySelectorAll('.blog-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.blog-article').forEach(a => a.classList.remove('active'));
+  card.classList.add('active');
+  document.getElementById('blog-' + num).classList.add('active');
 }
 
 /* ═══ Backend integration tabs ══════════════════════════════════ */
